@@ -80,7 +80,10 @@ class SVGContainer extends React.Component {
       this.dots.splice( this.props.positive, this.dots.length - this.props.positive );
     } else if( this.dots.length < this.props.positive ) {
       for( var i = this.dots.length; i < this.props.positive; i++) {
-        this.dots.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400}/>)
+
+        var positive = Math.round(Math.random());
+
+        this.dots.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400} positive={positive}/>)
       }
     }
 
@@ -89,12 +92,6 @@ class SVGContainer extends React.Component {
     return (
       <div className="SVGContainer">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500">
-          <defs>
-            <mask id="dotmask">
-                <circle id="outer" cx="0" cy="0" r="25" fill="white"/>
-                <circle id="inner" cx="0" cy="0" r="20"/>
-            </mask>
-          </defs>
           <g>
             {this.dots}
           </g>
@@ -112,9 +109,15 @@ class SVGDot extends React.Component {
 
   render(){
 
-    
+    if( !this.props.positive ) {
+      return <circle cx={this.props.x} cy={this.props.y} r={25} fill="blue" stroke={2} mask="url(#dotmask)"/>
+    }
 
-    return <circle cx={this.props.x} cy={this.props.y} r={25} fill="blue" stroke={2}/>
+    return <path fill="#0033FF" stroke="none" transform={`translate(${this.props.x},${this.props.y})`} d="
+M 50 24.95
+Q 50 14.55 42.7 7.25 35.3 -0.05 25 -0.05 14.7 -0.05 7.3 7.25 0 14.55 0 24.95 0 35.25 7.3 42.55 14.7 49.95 25 49.95 35.3 49.95 42.7 42.55 50 35.25 50 24.95
+M 8.5 24.85
+Q 8.5 17.95 13.3 13.15 18.2 8.25 25 8.25 31.8 8.25 36.7 13.15 41.5 17.95 41.5 24.85 41.5 31.65 36.7 36.45 31.8 41.35 25 41.35 18.2 41.35 13.3 36.45 8.5 31.65 8.5 24.85 Z"/>
   }
 }
 
