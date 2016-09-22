@@ -47,6 +47,9 @@ class DotsContainer extends Component{
 
 
   render() {
+
+    var baseIsOver = (this.state.value > 1);
+
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -58,7 +61,7 @@ class DotsContainer extends Component{
         <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
 
         
-        <SVGContainer className="SVGContainer" positive={this.state.value} />
+        <SVGContainer className="SVGContainer" positive={this.state.value} baseIsOver={baseIsOver} />
 
         
       </div>);
@@ -87,11 +90,11 @@ class SVGContainer extends React.Component {
       }
     }
 
-    
+    var style = (this.props.baseIsOver) ? "shaking" : "";
 
     return (
       <div className="SVGContainer">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500" className={style}>
           <g>
             {this.dots}
           </g>
@@ -122,12 +125,12 @@ class SVGDot extends React.Component {
     var color = (this.state.selected) ? "red" : "blue";
 
     if( !this.props.positive ) {
-      return <circle cx={0} cy={0} r={25} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
+      return <circle cx={0} cy={0} r={40} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
     }
 
     return (<g transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}>
-              <circle cx={0} cy={0} r={25} fill={color} stroke={2} />
-              <circle cx={0} cy={0} r={20} fill="white" stroke={2} />
+              <circle cx={0} cy={0} r={40} fill={color} stroke={2} />
+              <circle cx={0} cy={0} r={35} fill="white" stroke={2} />
             </g>);
   }
 }
