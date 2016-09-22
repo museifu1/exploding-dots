@@ -7,7 +7,6 @@ import './App.css';
 
 class DotsContainer extends Component{
   
-
   constructor(props){
     super();
     this.state = {
@@ -57,7 +56,54 @@ class DotsContainer extends Component{
 
         <div className={"baseNumber baseNumber2 " + (this.state.value > 1 ? 'baseIsOver' : '')}>{this.state.value}</div>
         <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
+
+        
+        <SVGContainer className="SVGContainer" positive={this.state.value} />
+
+        
       </div>);
+  }
+}
+
+class SVGContainer extends React.Component {
+  
+
+  constructor(props){
+    super();
+
+    this.cache = []
+  }
+  
+  render() {
+
+    if( this.cache.length > this.props.positive ) {
+      this.cache.splice( this.props.positive, this.cache.length - this.props.positive );
+    } else if( this.cache.length < this.props.positive ) {
+      for( var i = this.cache.length; i < this.props.positive; i++) {
+        this.cache.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400}/>)
+      }
+    }
+
+    
+
+    return (
+      <div className="SVGContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500">
+          {this.cache}
+        </svg>
+      </div>
+    );
+  }
+}
+
+class SVGDot extends React.Component {
+
+  constructor(props){
+    super();
+  }
+
+  render(){
+    return <circle cx={this.props.x} cy={this.props.y} r={25} fill="blue"/>
   }
 }
 
@@ -67,7 +113,7 @@ class DotsContainer extends Component{
 class ConfigPanel extends Component{
   render() {
     return (
-      <div class="configPanel">
+      <div className="configPanel">
         <select>
           <option value="2">Base 2</option>
           <option value="2">Base 10</option>

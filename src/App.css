@@ -79,3 +79,8 @@
      transform: translate3d(0px, 0, 0);
   }
 }
+
+.SVGContainer {
+  width: 100%;
+  margin: 0 auto;
+}
