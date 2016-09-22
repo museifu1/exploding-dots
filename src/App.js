@@ -71,16 +71,16 @@ class SVGContainer extends React.Component {
   constructor(props){
     super();
 
-    this.cache = []
+    this.dots = [];
   }
   
   render() {
 
-    if( this.cache.length > this.props.positive ) {
-      this.cache.splice( this.props.positive, this.cache.length - this.props.positive );
-    } else if( this.cache.length < this.props.positive ) {
-      for( var i = this.cache.length; i < this.props.positive; i++) {
-        this.cache.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400}/>)
+    if( this.dots.length > this.props.positive ) {
+      this.dots.splice( this.props.positive, this.dots.length - this.props.positive );
+    } else if( this.dots.length < this.props.positive ) {
+      for( var i = this.dots.length; i < this.props.positive; i++) {
+        this.dots.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400}/>)
       }
     }
 
@@ -89,7 +89,15 @@ class SVGContainer extends React.Component {
     return (
       <div className="SVGContainer">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500">
-          {this.cache}
+          <defs>
+            <mask id="dotmask">
+                <circle id="outer" cx="0" cy="0" r="25" fill="white"/>
+                <circle id="inner" cx="0" cy="0" r="20"/>
+            </mask>
+          </defs>
+          <g>
+            {this.dots}
+          </g>
         </svg>
       </div>
     );
@@ -103,7 +111,10 @@ class SVGDot extends React.Component {
   }
 
   render(){
-    return <circle cx={this.props.x} cy={this.props.y} r={25} fill="blue"/>
+
+    
+
+    return <circle cx={this.props.x} cy={this.props.y} r={25} fill="blue" stroke={2}/>
   }
 }
 
