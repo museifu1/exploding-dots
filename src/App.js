@@ -103,22 +103,30 @@ class SVGContainer extends React.Component {
 
 class SVGDot extends React.Component {
 
+
   constructor(props){
     super();
+
+    this.state = {selected:false};
   }
 
   handleClick(){
-    console.log("click");
+    
+    this.setState({
+      selected: !this.state.selected
+    });
   }
 
   render(){
 
+    var color = (this.state.selected) ? "red" : "blue";
+
     if( !this.props.positive ) {
-      return <circle cx={0} cy={0} r={25} fill="blue" stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
+      return <circle cx={0} cy={0} r={25} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
     }
 
     return (<g transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}>
-              <circle cx={0} cy={0} r={25} fill="blue" stroke={2} />
+              <circle cx={0} cy={0} r={25} fill={color} stroke={2} />
               <circle cx={0} cy={0} r={20} fill="white" stroke={2} />
             </g>);
   }
