@@ -29,7 +29,6 @@
 .dotsContainer
 {
   width: 200px;
-  height: 200px;
   border: 1px solid #9cc6e0;
   display: inline-block;
   margin: 10px;
@@ -58,6 +57,13 @@
   transform: translate3d(0, 0, 0);
 }
 
+.shaking
+{
+  animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;
+  animation-iteration-count: infinite;
+  transform: translate3d(0, 0, 0);
+}
+
 
 @keyframes shake {
   3%, 22% {
@@ -78,4 +84,13 @@
   25%{
      transform: translate3d(0px, 0, 0);
   }
+}
+
+.SVGContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+body {
+  -webkit-tap-highlight-color:transparent
 }

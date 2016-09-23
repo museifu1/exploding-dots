@@ -10,7 +10,6 @@ import AppDispatcher from './dispatchers/AppDispatcher';
 
 class DotsContainer extends Component{
   
-
   constructor(props){
     super();
     this.state = {
@@ -51,6 +50,10 @@ class DotsContainer extends Component{
 
 
   render() {
+
+    var baseIsOver = (this.state.value > 1);
+
+
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -58,9 +61,81 @@ class DotsContainer extends Component{
         <button onClick={this.plusOne.bind(this)}>+1</button>
         <button onClick={this.minusOne.bind(this)}>-1</button>
 
-        <div className={"baseNumber baseNumber2 " + (this.state.value > App.store.getState().base ? 'baseIsOver' : '')}>{this.state.value}</div>
+        <div className={"baseNumber baseNumber2 " + (this.state.value > 2 ? 'baseIsOver' : '')}>{this.state.value}</div>
         <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
+
+        
+        <SVGContainer className="SVGContainer" positive={this.state.value} baseIsOver={baseIsOver} />
+
+        
       </div>);
+  }
+}
+
+class SVGContainer extends React.Component {
+  
+
+  constructor(props){
+    super();
+
+    this.dots = [];
+  }
+  
+  render() {
+
+    if( this.dots.length > this.props.positive ) {
+      this.dots.splice( this.props.positive, this.dots.length - this.props.positive );
+    } else if( this.dots.length < this.props.positive ) {
+      for( var i = this.dots.length; i < this.props.positive; i++) {
+
+        var positive = Math.round(Math.random());
+
+        this.dots.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400} positive={positive}/>)
+      }
+    }
+
+    var style = (this.props.baseIsOver) ? "shaking" : "";
+
+    return (
+      <div className="SVGContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500" className={style}>
+          <g>
+            {this.dots}
+          </g>
+        </svg>
+      </div>
+    );
+  }
+}
+
+class SVGDot extends React.Component {
+
+
+  constructor(props){
+    super();
+
+    this.state = {selected:false};
+  }
+
+  handleClick(){
+    
+    this.setState({
+      selected: !this.state.selected
+    });
+  }
+
+  render(){
+
+    var color = (this.state.selected) ? "red" : "blue";
+
+    if( !this.props.positive ) {
+      return <circle cx={0} cy={0} r={40} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
+    }
+
+    return (<g transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}>
+              <circle cx={0} cy={0} r={40} fill={color} stroke={2} />
+              <circle cx={0} cy={0} r={35} fill="white" stroke={2} />
+            </g>);
   }
 }
 
