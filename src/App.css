@@ -8,17 +8,91 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+  background-color: #555;
+  height: 65px;
+  padding: 10px;
   color: white;
+  margin-bottom: 20px;
 }
 
 .App-intro {
   font-size: large;
+  text-align: center;
 }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+.dotsContainer
+{
+  width: 200px;
+  border: 1px solid #9cc6e0;
+  display: inline-block;
+  margin: 10px;
+}
+
+.dotsContainer .title
+{
+  padding: 5px;
+  background-color: #9cc6e0;
+}
+
+.dotsContainer .nbDots{
+    width: 100%;
+    float: left;
+    margin: 10px 0px 5px;
+    font-size: 40px;
+    color: #555;
+}
+
+
+.dotsContainer .baseIsOver
+{
+  color:#ff0000;
+  animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;
+  animation-iteration-count: infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+.shaking
+{
+  animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;
+  animation-iteration-count: infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+
+@keyframes shake {
+  3%, 22% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  5%, 20% {
+    transform: translate3d(1px, 0, 0);
+  }
+
+  8%, 13%, 18% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  10%, 15% {
+    transform: translate3d(1px, 0, 0);
+  }
+  25%{
+     transform: translate3d(0px, 0, 0);
+  }
+}
+
+
+
+.SVGContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+body {
+  -webkit-tap-highlight-color:transparent
 }
