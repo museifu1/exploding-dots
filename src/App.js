@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import DotsActions from './actions/DotsActions.js'
+import DotsStore from './stores/DotsStore.js'
+import AppDispatcher from './dispatchers/AppDispatcher';
 
 
 
@@ -50,6 +53,7 @@ class DotsContainer extends Component{
 
     var baseIsOver = (this.state.value > 1);
 
+
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -57,7 +61,7 @@ class DotsContainer extends Component{
         <button onClick={this.plusOne.bind(this)}>+1</button>
         <button onClick={this.minusOne.bind(this)}>-1</button>
 
-        <div className={"baseNumber baseNumber2 " + (this.state.value > 1 ? 'baseIsOver' : '')}>{this.state.value}</div>
+        <div className={"baseNumber baseNumber2 " + (this.state.value > 2 ? 'baseIsOver' : '')}>{this.state.value}</div>
         <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
 
         
@@ -145,10 +149,16 @@ class SVGDot extends React.Component {
 
 
 class ConfigPanel extends Component{
+
+  _select(){
+
+  }
+
+
   render() {
     return (
-      <div className="configPanel">
-        <select>
+      <div className="configPanel" onChange={DotsActions.changeBase}>
+        <select onChange={this._select} >
           <option value="2">Base 2</option>
           <option value="2">Base 10</option>
           <option value="2">Base 16</option>
@@ -162,6 +172,16 @@ class ConfigPanel extends Component{
 
 
 class App extends Component {
+
+  constructor(options){
+
+      super(options); 
+
+      this.store = new DotsStore(AppDispatcher, options.state);
+
+  }
+
+
   render() {
     return (
       <div className="App">
