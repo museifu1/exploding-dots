@@ -113,10 +113,16 @@ class SVGDot extends React.Component {
     this.state = {selected:false};
   }
 
-  handleClick(){
+  handleMouseDown(){
     
     this.setState({
-      selected: !this.state.selected
+      selected: true
+    });
+  }
+
+  handleMouseUp(){
+    this.setState({
+      selected: false
     });
   }
 
@@ -125,10 +131,10 @@ class SVGDot extends React.Component {
     var color = (this.state.selected) ? "red" : "blue";
 
     if( !this.props.positive ) {
-      return <circle cx={0} cy={0} r={40} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}/>
+      return <circle cx={0} cy={0} r={40} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}/>
     }
 
-    return (<g transform={`translate(${this.props.x},${this.props.y})`} onClick={this.handleClick.bind(this)}>
+    return (<g transform={`translate(${this.props.x},${this.props.y})`} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
               <circle cx={0} cy={0} r={40} fill={color} stroke={2} />
               <circle cx={0} cy={0} r={35} fill="white" stroke={2} />
             </g>);
