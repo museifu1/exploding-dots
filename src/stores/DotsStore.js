@@ -8,6 +8,7 @@ const CHANGE_EVENT = 'change';
 
 class DotsStore extends EventEmitter {
 
+
   constructor(dispatcher, state){
   	
   	super();
@@ -15,16 +16,20 @@ class DotsStore extends EventEmitter {
   	if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
     if (state) {      		console.error('app is created with initial state', state);    }
 
-    state = { base : 10 };
+    this.state = { base : 2 };
     //state = _.merge({}, Store.defaultState, state);
+
+    var _this = this;
 
     // Register handlers
     dispatcher.register(function (action) {
+      console.log()
       if (action.actionType === DOTS.BASE_CHANGED) {
       	console.log("GET ACTION", action);
-      	this.state.base = 2;
-        //_this.onItemAdd(action.item);
-        //_this.emit(CHANGE);
+        //console.log("action.actionType", action.actionType);
+        //console.log("action.base", action.base);
+      	_this.state.base = action.base;
+        _this.emitChange();
       }
     });
 
@@ -44,18 +49,22 @@ class DotsStore extends EventEmitter {
     this.removeListener(CHANGE_EVENT, cb);
   }
 
+  emitChange(){
+    this.emit('change');
+  }
+
   getList() {
-    return _store;
+    //return _store;
   }
 
 
   getBase(){
-  	return this.base;
+  	return this.state.base;
   }
 
 
   getState () {
-    return this.state;
+    //return this.state;
   }
 
 }
@@ -65,9 +74,9 @@ class DotsStore extends EventEmitter {
 
 
 // Default state
-DotsStore.defaultState = {
-  base : 10
-};
+/*DotsStore.defaultState = {
+  base : 2
+};*/
 
 export default DotsStore;
 

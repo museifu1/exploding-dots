@@ -6,6 +6,14 @@ import AppDispatcher from './dispatchers/AppDispatcher';
 
 
 
+var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
+
+var getDotsState = () => {
+  return {
+    base : _DotsStore.getBase()
+  }
+}
+
 
 
 class DotsContainer extends Component{
@@ -13,10 +21,9 @@ class DotsContainer extends Component{
   constructor(props){
     super();
     this.state = {
+      base : 2,
       value : 0,
-      index: props.index,
-      base2 : 0,
-      base16 : 0
+      index: props.index
     }; 
 
   }
@@ -24,34 +31,53 @@ class DotsContainer extends Component{
   plusOne(){
     var v = this.state.value+1;
     this.setState({value : v});
-    this.updateBases(v);
+    //this.updateBases(v);
   }
 
   minusOne(){
     if(this.state.value > 0){
       var v = this.state.value-1;
       this.setState({value : v});
-      this.updateBases(v);
+      //this.updateBases(v);
     }
   }
 
-
+  /*
   updateBases(value){
     this.setState({
       base2 : this.updateBase(value, 2),
       base16 : this.updateBase(value, 16)
     })
-  }
+  }*/
 
   updateBase(value, base){
       return Math.round(value / base);
   }
 
 
+  _onChange(){
+    console.log("_onChange", getDotsState());
+    this.setState(getDotsState());
+  }
+
+
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+
+
+
 
   render() {
 
-    var baseIsOver = (this.state.value > 1);
+    var baseIsOver = (this.state.value > (this.state.base-1));
 
 
     return (
@@ -61,7 +87,7 @@ class DotsContainer extends Component{
         <button onClick={this.plusOne.bind(this)}>+1</button>
         <button onClick={this.minusOne.bind(this)}>-1</button>
 
-        <div className={"baseNumber baseNumber2 " + (this.state.value > 2 ? 'baseIsOver' : '')}>{this.state.value}</div>
+        <div className={"baseNumber baseNumber2 " + (this.state.value > (this.state.base-1) ? 'baseIsOver' : '')}>{this.state.value}</div>
         <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
 
         
@@ -150,18 +176,30 @@ class SVGDot extends React.Component {
 
 class ConfigPanel extends Component{
 
-  _select(){
+
+  constructor(props){
+    super();
+
+    this.state = {base : 2 };
+  }
+
+
+
+  _select(event){
+    //this.setState({base : event.target.value})
+    console.log(Number.parseInt(event.target.value));
+    DotsActions.changeBase(Number.parseInt(event.target.value));
 
   }
 
 
   render() {
     return (
-      <div className="configPanel" onChange={DotsActions.changeBase}>
+      <div className="configPanel" onChange={this._select} value={this.state.base}>
         <select onChange={this._select} >
           <option value="2">Base 2</option>
-          <option value="2">Base 10</option>
-          <option value="2">Base 16</option>
+          <option value="10">Base 10</option>
+          <option value="16">Base 16</option>
         </select>
       </div>
     );
@@ -177,7 +215,7 @@ class App extends Component {
 
       super(options); 
 
-      this.store = new DotsStore(AppDispatcher, options.state);
+      //this.store = new DotsStore(AppDispatcher, options.state);
 
   }
 
