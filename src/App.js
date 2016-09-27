@@ -169,16 +169,16 @@ class SVGDot extends React.Component {
 
   render(){
 
-    var color = (this.state.selected) ? "red" : "blue";
+    var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
-    if( !this.props.positive ) {
+    //if( !this.props.positive ) {
       return (<circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
-    }
+    //}
 
-    return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
+    /*return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
               <circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} />
               <circle cx={this.props.x} cy={this.props.y} r={35} fill="white" stroke={2} />
-            </g>);
+            </g>);*/
   }
 }
 
