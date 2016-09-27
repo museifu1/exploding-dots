@@ -88,6 +88,40 @@
 
 
 
+.svgDot-enter {
+  transform-origin: center;
+  animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.svgDot-enter.svgDot-enter-active {
+
+}
+
+.svgDot-leave {
+  animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both;
+  transform-origin: center;
+}
+
+.svgDot-leave.svgDot-leave-active {
+
+}
+
+
+@keyframes dotZoomAnimationIn {
+  0% {    transform:scale(0);   }
+  40% {   transform:scale(1.1); }
+  100% {  transform:scale(1);   }
+}
+
+
+@keyframes dotZoomAnimationOut {
+  0% {    transform:scale(1);   }
+  100% {  transform:scale(0);   }
+}
+
+
+
+
 .SVGContainer {
   width: 100%;
   margin: 0 auto;

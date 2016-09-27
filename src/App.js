@@ -3,6 +3,7 @@ import './App.css';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
 import AppDispatcher from './dispatchers/AppDispatcher';
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 
 
@@ -109,6 +110,9 @@ class SVGContainer extends React.Component {
 
     this.dots = [];
   }
+
+
+
   
   render() {
 
@@ -129,7 +133,10 @@ class SVGContainer extends React.Component {
       <div className="SVGContainer">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500" className={style}>
           <g>
-            {this.dots}
+            <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
+                transitionEnterTimeout={300} transitionLeaveTimeout={300} >
+              {this.dots}
+            </ReactCSSTransitionGroup >
           </g>
         </svg>
       </div>
@@ -145,6 +152,7 @@ class SVGDot extends React.Component {
 
     this.state = {selected:false};
   }
+
 
   handleMouseDown(){
     
@@ -164,12 +172,12 @@ class SVGDot extends React.Component {
     var color = (this.state.selected) ? "red" : "blue";
 
     if( !this.props.positive ) {
-      return <circle cx={0} cy={0} r={40} fill={color} stroke={2} transform={`translate(${this.props.x},${this.props.y})`} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}/>
+      return (<circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
     }
 
-    return (<g transform={`translate(${this.props.x},${this.props.y})`} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
-              <circle cx={0} cy={0} r={40} fill={color} stroke={2} />
-              <circle cx={0} cy={0} r={35} fill="white" stroke={2} />
+    return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
+              <circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} />
+              <circle cx={this.props.x} cy={this.props.y} r={35} fill="white" stroke={2} />
             </g>);
   }
 }
