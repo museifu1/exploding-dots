@@ -10,4 +10,20 @@ export default class DotsActions {
     		base : value
     	});
     }
+
+    static dotsChanged(_index, _value){
+    	AppDispatcher.dispatch({
+    		actionType : DOTS.DOTS_CHANGED,
+    		index : _index,
+    		value : _value
+    	});
+    }
+
+
+    static stabilize(){
+    	AppDispatcher.dispatch({
+    		actionType : DOTS.STABILIZE
+    	});
+
+    }
 }

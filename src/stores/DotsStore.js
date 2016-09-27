@@ -16,27 +16,45 @@ class DotsStore extends EventEmitter {
   	if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
     if (state) {      		console.error('app is created with initial state', state);    }
 
-    this.state = { base : 2 };
-    //state = _.merge({}, Store.defaultState, state);
+    this.state = { 
+      base : 2 ,
+      dots : [ 0, 0, 0 ]
+    };
 
     var _this = this;
 
     // Register handlers
     dispatcher.register(function (action) {
-      console.log()
-      if (action.actionType === DOTS.BASE_CHANGED) {
-      	console.log("GET ACTION", action);
-        //console.log("action.actionType", action.actionType);
-        //console.log("action.base", action.base);
-      	_this.state.base = action.base;
-        _this.emitChange();
+
+      switch(action.actionType){
+
+        case DOTS.BASE_CHANGED:
+          console.log("GET ACTION", action);
+          _this.state.base = action.base;
+          _this.emitChange();
+          break;
+        case DOTS.DOTS_CHANGED:
+          console.log("dots changes", action);
+          _this.state.dots[action.index] = action.value;
+          _this.emitChange();
+          break;
+        case DOTS.STABILIZE:
+          console.log("STABILIZE", action);
+          _this.state.dots = [0, 0, 0];
+          _this.emitChange();
+          //this.stablize();
+          break;
+
       }
+
     });
 
-    console.log('store is loaded with state', state);
+  }
 
-    // Turn state to immutable
-    //_this.state = Immutable.fromJS(state);
+
+
+  stablize(){
+
   }
 
 
@@ -60,6 +78,10 @@ class DotsStore extends EventEmitter {
 
   getBase(){
   	return this.state.base;
+  }
+
+  getDotsValue(index){
+    return this.state.dots[index];
   }
 
 

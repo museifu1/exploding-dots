@@ -8,9 +8,10 @@ import AppDispatcher from './dispatchers/AppDispatcher';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
-var getDotsState = () => {
+var getDotsState = (index) => {
   return {
-    base : _DotsStore.getBase()
+    base : _DotsStore.getBase(),
+    value : _DotsStore.getDotsValue(index)
   }
 }
 
@@ -30,14 +31,16 @@ class DotsContainer extends Component{
 
   plusOne(){
     var v = this.state.value+1;
-    this.setState({value : v});
+    //this.setState({value : v});
+    DotsActions.dotsChanged(this.state.index, v);
     //this.updateBases(v);
   }
 
   minusOne(){
     if(this.state.value > 0){
       var v = this.state.value-1;
-      this.setState({value : v});
+      //this.setState({value : v});
+      DotsActions.dotsChanged(this.state.index, v);
       //this.updateBases(v);
     }
   }
@@ -56,8 +59,8 @@ class DotsContainer extends Component{
 
 
   _onChange(){
-    console.log("_onChange", getDotsState());
-    this.setState(getDotsState());
+    console.log("_onChange", getDotsState(this.state.index));
+    this.setState(getDotsState(this.state.index));
   }
 
 
@@ -193,6 +196,11 @@ class ConfigPanel extends Component{
   }
 
 
+  stabilize(event){
+    DotsActions.stabilize();
+  }
+
+
   render() {
     return (
       <div className="configPanel" onChange={this._select} value={this.state.base}>
@@ -201,6 +209,8 @@ class ConfigPanel extends Component{
           <option value="10">Base 10</option>
           <option value="16">Base 16</option>
         </select>
+
+        <input type="button" value="Stabiliser le système" onClick={this.stabilize} />
       </div>
     );
   }
