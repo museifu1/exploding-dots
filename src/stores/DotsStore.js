@@ -18,7 +18,8 @@ class DotsStore extends EventEmitter {
 
     this.state = { 
       base : 2 ,
-      dots : [ 0, 0, 0 ]
+      dots : [ 0, 0, 0 ],
+      nbContainers : 3
     };
 
     var _this = this;
@@ -40,9 +41,9 @@ class DotsStore extends EventEmitter {
           break;
         case DOTS.STABILIZE:
           console.log("STABILIZE", action);
-          _this.state.dots = [0, 0, 0];
+          _this.stablize();
           _this.emitChange();
-          //this.stablize();
+          
           break;
 
       }
@@ -51,12 +52,23 @@ class DotsStore extends EventEmitter {
 
   }
 
-
-
   stablize(){
 
-  }
+    var dots = this.state.dots;
+    var base = this.state.base;
 
+    dots.splice(this.state.nbContainers);
+    
+    dots.forEach(function(dot, index){
+
+      if(dots.length <= index+1){
+        dots.push(0);  
+      }
+
+      dots[index+1] += Math.floor(dot / base);
+      dots[index] = dot % base;
+    });
+  }
 
 
   addChangeListener(cb) {
