@@ -93,6 +93,10 @@ class DotsStore extends EventEmitter {
   }
 
   getDotsValue(index){
+    return this.state.dots;
+  }
+
+  getDotsValueByIndex(index){
     return this.state.dots[index];
   }
 

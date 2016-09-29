@@ -133,6 +133,27 @@ body
   margin: 0 auto;
 }
 
+
+
+
+
 body {
   -webkit-tap-highlight-color:transparent
+}
+
+.dotsFullSizeContainers
+{
+  text-align: center;
+}
+
+
+.dotsFullSizeContainers .SVGContainer {
+  width: 600px;
+  display: inline-block;
+}
+
+
+.dotsFullSizeContainers .SVGContainer svg
+{
+  height: 400px;
 }

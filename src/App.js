@@ -9,10 +9,19 @@ import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
-var getDotsState = (index) => {
+var getDotsStateByIndex = (index) => {
   return {
     base : _DotsStore.getBase(),
-    value : _DotsStore.getDotsValue(index)
+    value : _DotsStore.getDotsValueByIndex(index),
+    dots : _DotsStore.getDotsValue()
+  }
+}
+
+
+var getDotsState = () => {
+  return {
+    base : _DotsStore.getBase(),
+    dots : _DotsStore.getDotsValue()
   }
 }
 
@@ -60,8 +69,8 @@ class DotsContainer extends Component{
 
 
   _onChange(){
-    console.log("_onChange", getDotsState(this.state.index));
-    this.setState(getDotsState(this.state.index));
+    //console.log("_onChange", getDotsState(this.state.index));
+    this.setState(getDotsStateByIndex(this.state.index));
   }
 
 
@@ -102,6 +111,8 @@ class DotsContainer extends Component{
   }
 }
 
+
+
 class SVGContainer extends React.Component {
   
 
@@ -129,15 +140,62 @@ class SVGContainer extends React.Component {
 
     var style = (this.props.baseIsOver) ? "shaking" : "";
 
+    var position = `translate(${1200 - this.props.index*450},0)`;
+
+    return (
+
+      <g transform={position}>
+        <rect x="0" y="0" width="400" height="650" fill="#fff" />
+
+
+        <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
+            transitionEnterTimeout={300} transitionLeaveTimeout={300} >
+          {this.dots}
+        </ReactCSSTransitionGroup >
+      </g>
+        
+    );
+  }
+}
+
+
+
+class SVGFullSizeContainer extends React.Component {
+  
+
+  constructor(props){
+    super();
+
+    this.state = {
+      dots : [0, 0, 0]
+    }
+  }
+
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange(){
+    this.setState(getDotsState());
+  }
+
+
+  
+  render() {
+
     return (
       <div className="SVGContainer">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 500 500" className={style}>
-          <g>
-            <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
-                transitionEnterTimeout={300} transitionLeaveTimeout={300} >
-              {this.dots}
-            </ReactCSSTransitionGroup >
-          </g>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
+
+          <SVGContainer className="SVGContainer" index={2} positive={this.state.dots[2]}  baseIsOver={false} />
+          <SVGContainer className="SVGContainer" index={1} positive={this.state.dots[1]}  baseIsOver={false} />
+          <SVGContainer className="SVGContainer" index={0} positive={this.state.dots[0]}  baseIsOver={false} />
         </svg>
       </div>
     );
@@ -254,6 +312,11 @@ class App extends Component {
             <DotsContainer index="2" />
             <DotsContainer index="1" />
             <DotsContainer index="0" />
+          </div>
+
+          <div className="dotsFullSizeContainers">
+            <SVGFullSizeContainer className="SVGFullSizeContainer" baseIsOver={false} />
+
           </div>
 
 
