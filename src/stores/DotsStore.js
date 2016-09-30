@@ -18,8 +18,10 @@ class DotsStore extends EventEmitter {
 
     this.state = { 
       base : 2 ,
-      dots : [ 0, 0, 0 ],
+      dots : [ [], [], [] ],
       nbContainers : 3,
+      containerWidth : 400,
+      containerHeight : 650, 
       dotsRayon : 30
     };
 
@@ -31,23 +33,23 @@ class DotsStore extends EventEmitter {
       switch(action.actionType){
 
         case DOTS.BASE_CHANGED:
-          console.log("GET ACTION", action);
-          _this.state.base = action.base;
-          _this.emitChange();
+
+          _this.state.base = action.base;          
           break;
         case DOTS.DOTS_CHANGED:
-          console.log("dots changes", action);
-          _this.state.dots[action.index] = action.value;
-          _this.emitChange();
+
+          if(action.hasOwnProperty("newdot")){
+             _this.state.dots[action.index].push(action.newdot);
+          }else{
+             _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
+          }
           break;
         case DOTS.STABILIZE:
-          console.log("STABILIZE", action);
-          _this.stablize();
-          _this.emitChange();
-          
+          _this.stablize();         
           break;
-
       }
+
+      _this.emitChange();
 
     });
 
@@ -57,18 +59,45 @@ class DotsStore extends EventEmitter {
 
     var dots = this.state.dots;
     var base = this.state.base;
+    var _this = this;
 
     dots.splice(this.state.nbContainers);
     
     dots.forEach(function(dot, index){
 
       if(dots.length <= index+1){
-        dots.push(0);  
+        dots.push([]);  
       }
 
-      dots[index+1] += Math.floor(dot / base);
-      dots[index] = dot % base;
+      dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + Math.floor(dot.length / base));
+      dots[index] = _this.updateDotsArray(dots[index], dot.length % base);
     });
+  }
+
+
+  updateDotsArray(dotsArray, nbDots){
+
+    if(dotsArray.length > nbDots){
+      dotsArray.splice(nbDots);
+    }else if(dotsArray.length < nbDots){
+      dotsArray = dotsArray.concat(this.generateDots(nbDots - dotsArray.length));
+    }
+    return dotsArray;
+  }
+
+
+  generateDots(nbDots){
+     
+    var a = [];
+    for(var i = 0; i < nbDots; i++){
+
+      a.push({
+        x : Math.min(Math.max(Math.random() * this.state.containerWidth, this.getDotsRayon()), this.state.containerWidth-this.getDotsRayon()),
+        y : Math.min(Math.max(Math.random() * this.state.containerHeight,this.getDotsRayon()), this.state.containerHeight-this.getDotsRayon())
+      });
+    }
+
+    return a;
   }
 
 
@@ -93,12 +122,12 @@ class DotsStore extends EventEmitter {
   	return this.state.base;
   }
 
-  getDotsValue(index){
+  getDotsValue(){
     return this.state.dots;
   }
 
   getDotsValueByIndex(index){
-    return this.state.dots[index];
+    return this.state.dots[index].length;
   }
 
   getDotsRayon(){
@@ -112,34 +141,4 @@ class DotsStore extends EventEmitter {
 
 }
 
-
-
-
-
-// Default state
-/*DotsStore.defaultState = {
-  base : 2
-};*/
-
 export default DotsStore;
-
-
-/*
-const DotsStore = new DotsStoreClass();
-
-
-AppDispatcher.register((payload) => {
-  const action = payload.action;
-
-  switch (action.actionType) {
-
-  	case "baseSelected":
-
-		break;
-
-	default:
-	    return true;
-	}
-});
-
-export default DotsStore;*/

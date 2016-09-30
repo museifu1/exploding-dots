@@ -4,19 +4,30 @@ import {DOTS} from '../constants/DotsConstants';
 export default class DotsActions {
 
     static changeBase(value){
-    	console.log("changebase", value);
+
     	AppDispatcher.dispatch({
     		actionType : DOTS.BASE_CHANGED,
     		base : value
     	});
     }
 
-    static dotsChanged(_index, _value){
-    	AppDispatcher.dispatch({
-    		actionType : DOTS.DOTS_CHANGED,
-    		index : _index,
-    		value : _value
-    	});
+    static dotsChanged(_index, _value, _x, _y){
+
+        var obj = {
+            actionType : DOTS.DOTS_CHANGED,
+            index : _index,
+            value : _value
+        };
+
+
+        if(_x != undefined && _y != undefined){
+            obj.newdot = {
+                x : _x,
+                y : _y
+            }
+        }
+
+        AppDispatcher.dispatch(obj);
     }
 
 

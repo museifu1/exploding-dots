@@ -6,7 +6,6 @@ import AppDispatcher from './dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 
-
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
 var getDotsStateByIndex = (index) => {
@@ -41,27 +40,16 @@ class DotsContainer extends Component{
 
   plusOne(){
     var v = this.state.value+1;
-    //this.setState({value : v});
     DotsActions.dotsChanged(this.state.index, v);
-    //this.updateBases(v);
   }
 
   minusOne(){
     if(this.state.value > 0){
       var v = this.state.value-1;
-      //this.setState({value : v});
       DotsActions.dotsChanged(this.state.index, v);
-      //this.updateBases(v);
     }
   }
 
-  /*
-  updateBases(value){
-    this.setState({
-      base2 : this.updateBase(value, 2),
-      base16 : this.updateBase(value, 16)
-    })
-  }*/
 
   updateBase(value, base){
       return Math.round(value / base);
@@ -69,7 +57,6 @@ class DotsContainer extends Component{
 
 
   _onChange(){
-    //console.log("_onChange", getDotsState(this.state.index));
     this.setState(getDotsStateByIndex(this.state.index));
   }
 
@@ -101,11 +88,8 @@ class DotsContainer extends Component{
         <button onClick={this.minusOne.bind(this)}>-1</button>
 
         <div className={"baseNumber baseNumber2 " + (this.state.value > (this.state.base-1) ? 'baseIsOver' : '')}>{this.state.value}</div>
-        <div className={"baseNumber baseNumber2 " + (this.state.value > 15 ? 'baseIsOver' : '')}>{this.state.value}</div>
 
-        
-        <SVGContainer className="SVGContainer" positive={this.state.value} baseIsOver={baseIsOver} />
-
+      
         
       </div>);
   }
@@ -128,35 +112,33 @@ class SVGContainer extends React.Component {
   }
 
 
-  addDot(){
+  addDot(event){
     var v = this.dots.length+1;
-    DotsActions.dotsChanged(this.props.index, v);
-  }
 
+    var rect = event.target.getBoundingClientRect();
+
+    var posx = event.clientX - rect.left;
+    var posy = event.clientY - rect.top;
+
+    DotsActions.dotsChanged(this.props.index, v, posx, posy);
+  }
 
 
   
   render() {
 
-    if( this.dots.length > this.props.positive ) {
-      this.dots.splice( this.props.positive, this.dots.length - this.props.positive );
-    } else if( this.dots.length < this.props.positive ) {
-      for( var i = this.dots.length; i < this.props.positive; i++) {
 
-        var positive = Math.round(Math.random());
+    var statedots = _DotsStore.getDotsValue()[this.props.index];
+    var positive = statedots.length;
 
-
-
-        var posx = Math.min(Math.max(Math.random() * this.state.width, _DotsStore.getDotsRayon()), this.state.width-_DotsStore.getDotsRayon());
-        var posy = Math.min(Math.max(Math.random() * this.state.height,_DotsStore.getDotsRayon()), this.state.height-_DotsStore.getDotsRayon());
-
-        console.log("posx", posx);
-        console.log("posy", posy);
-
-
-        this.dots.push(<SVGDot key={i} x={posx} y={posy} positive={positive}/>)
+    if( this.dots.length > positive ) {
+      this.dots.splice( positive, this.dots.length - positive );
+    } else if( this.dots.length < positive ) {
+      for( var i = this.dots.length; i < positive; i++) {
+        this.dots.push(<SVGDot key={i} x={statedots[i].x} y={statedots[i].y} positive={true}/>)
       }
     }
+
 
     var style = (this.props.baseIsOver) ? "shaking" : "";
 
@@ -213,9 +195,9 @@ class SVGFullSizeContainer extends React.Component {
       <div className="SVGContainer">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
 
-          <SVGContainer className="SVGContainer" index={2} positive={this.state.dots[2]}  baseIsOver={false} />
-          <SVGContainer className="SVGContainer" index={1} positive={this.state.dots[1]}  baseIsOver={false} />
-          <SVGContainer className="SVGContainer" index={0} positive={this.state.dots[0]}  baseIsOver={false} />
+          <SVGContainer className="SVGContainer" index={2} positive={this.state.dots[2].length}  baseIsOver={false} />
+          <SVGContainer className="SVGContainer" index={1} positive={this.state.dots[1].length}  baseIsOver={false} />
+          <SVGContainer className="SVGContainer" index={0} positive={this.state.dots[0].length}  baseIsOver={false} />
         </svg>
       </div>
     );
@@ -275,8 +257,6 @@ class ConfigPanel extends Component{
 
 
   _select(event){
-    //this.setState({base : event.target.value})
-    console.log(Number.parseInt(event.target.value));
     DotsActions.changeBase(Number.parseInt(event.target.value));
 
   }
