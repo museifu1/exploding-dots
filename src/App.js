@@ -119,7 +119,18 @@ class SVGContainer extends React.Component {
   constructor(props){
     super();
 
+    this.state = {
+      width : 400,
+      height : 650
+    }
+
     this.dots = [];
+  }
+
+
+  addDot(){
+    var v = this.dots.length+1;
+    DotsActions.dotsChanged(this.props.index, v);
   }
 
 
@@ -134,7 +145,16 @@ class SVGContainer extends React.Component {
 
         var positive = Math.round(Math.random());
 
-        this.dots.push(<SVGDot key={i} x={50+Math.random() * 400} y={50+Math.random() * 400} positive={positive}/>)
+
+
+        var posx = Math.min(Math.max(Math.random() * this.state.width, _DotsStore.getDotsRayon()), this.state.width-_DotsStore.getDotsRayon());
+        var posy = Math.min(Math.max(Math.random() * this.state.height,_DotsStore.getDotsRayon()), this.state.height-_DotsStore.getDotsRayon());
+
+        console.log("posx", posx);
+        console.log("posy", posy);
+
+
+        this.dots.push(<SVGDot key={i} x={posx} y={posy} positive={positive}/>)
       }
     }
 
@@ -145,7 +165,7 @@ class SVGContainer extends React.Component {
     return (
 
       <g transform={position}>
-        <rect x="0" y="0" width="400" height="650" fill="#fff" />
+        <rect x="0" y="0" width={this.state.width} height={this.state.height} fill="#fff" onClick={this.addDot.bind(this)} />
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
@@ -230,7 +250,7 @@ class SVGDot extends React.Component {
     var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
     //if( !this.props.positive ) {
-      return (<circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
+      return (<circle cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
     //}
 
     /*return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
