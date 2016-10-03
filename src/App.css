@@ -4,7 +4,10 @@ body
 }
 
 .App {
-  text-align: center;  
+  box-shadow: 5px 5px 0px 0px #689FBC;
+  margin: 45px auto;
+  max-width: 900px;
+  text-align: center; 
 }
 
 .App-logo {
@@ -14,14 +17,23 @@ body
 
 .App-header {
   background-color: #f0f0f0;
-  height: 65px;
+  /**height: 65px;
   padding: 10px;
   color: #555;
-  margin-bottom: 20px;
+  margin-bottom: 20px;**/
+  text-align: left;
+}
+
+.App-header h2{
+  font: 2em/2.5em Open Sans, sans-serif;
+  margin: 0;
+  padding: 0 40px;
 }
 
 .App-intro {
+  background: #fff;
   font-size: large;
+  padding: 30px 40px 40px;
   text-align: center;
 }
 
@@ -37,7 +49,6 @@ body
   display: inline-block;
   margin: 10px;
   background-color: #fff;
-  box-shadow: 5px 5px 0px 0px #689FBC;
 }
 
 .dotsContainer .title
@@ -141,19 +152,28 @@ body {
   -webkit-tap-highlight-color:transparent
 }
 
-.dotsFullSizeContainers
+/** .dotsFullSizeContainers
 {
   text-align: center;
 }
 
 
 .dotsFullSizeContainers .SVGContainer {
-  width: 600px;
+  background: red;
   display: inline-block;
+  width: 600px;
 }
 
 
 .dotsFullSizeContainers .SVGContainer svg
 {
+  background: blue;
   height: 400px;
+}
+.dotsFullSizeContainers .SVGContainer svg > g{
+	background: yellow;
+} **/
+
+.configPanelWrapper {
+	padding: 10px 0;
 }
