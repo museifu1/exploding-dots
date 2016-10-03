@@ -18,11 +18,11 @@ class DotsStore extends EventEmitter {
 
     this.state = { 
       base : 2 ,
-      dots : [ [], [], [] ],
-      nbContainers : 3,
-      containerWidth : 400,
-      containerHeight : 650, 
-      dotsRayon : 30
+      dots : [ [], [], [], [], [] ],
+      nbContainers : 5,
+      containerWidth : 300,
+      containerHeight : 450, 
+      dotsRayon : 25
     };
 
     var _this = this;
@@ -134,6 +134,9 @@ class DotsStore extends EventEmitter {
     return this.state.dotsRayon;
   }
 
+  getNbContainers(){
+    return this.state.nbContainers;
+  }
 
   getState () {
     //return this.state;
