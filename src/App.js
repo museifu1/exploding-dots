@@ -4,7 +4,7 @@ import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
 import AppDispatcher from './dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
-
+import * as d3 from 'd3';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -107,16 +107,23 @@ class SVGContainer extends React.Component {
     this.dots = [];
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    
+    d3.select(this.refs.zone).on("click", this.addDot.bind(this) );
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    d3.select(this.refs.zone).on("click", null );
+  }
 
   addDot(event){
     var v = this.dots.length+1;
 
-    var rect = event.target.getBoundingClientRect();
+    var pos = d3.mouse(this.refs.zone);
 
-    var posx = event.clientX - rect.left;
-    var posy = event.clientY - rect.top;
-
-    DotsActions.dotsChanged(this.props.index, v, posx, posy);
+    DotsActions.dotsChanged(this.props.index, v, pos[0], pos[1]);
   }
 
 
@@ -143,7 +150,7 @@ class SVGContainer extends React.Component {
 
       <g transform={position}>
         <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
-        <rect x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" onClick={this.addDot.bind(this)} />
+        <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
