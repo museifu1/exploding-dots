@@ -5,6 +5,7 @@ import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
 import AppDispatcher from './dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
+import * as d3 from 'd3';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -86,11 +87,7 @@ class DotsContainer extends Component{
         <span className="nbDots">{this.state.value}</span>
         <button onClick={this.plusOne.bind(this)}>+1</button>
         <button onClick={this.minusOne.bind(this)}>-1</button>
-
         <div className={"baseNumber baseNumber2 " + (this.state.value > (this.state.base-1) ? 'baseIsOver' : '')}>{this.state.value}</div>
-
-      
-        
       </div>);
   }
 }
@@ -104,23 +101,30 @@ class SVGContainer extends React.Component {
     super();
 
     this.state = {
-      width : 400,
-      height : 650
+      width : 300,
+      height : 450
     }
 
     this.dots = [];
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    
+    d3.select(this.refs.zone).on("click", this.addDot.bind(this) );
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    d3.select(this.refs.zone).on("click", null );
+  }
 
   addDot(event){
     var v = this.dots.length+1;
 
-    var rect = event.target.getBoundingClientRect();
+    var pos = d3.mouse(this.refs.zone);
 
-    var posx = event.clientX - rect.left;
-    var posy = event.clientY - rect.top;
-
-    DotsActions.dotsChanged(this.props.index, v, posx, posy);
+    DotsActions.dotsChanged(this.props.index, v, pos[0], pos[1]);
   }
 
 
@@ -141,13 +145,13 @@ class SVGContainer extends React.Component {
 
 
     var style = (this.props.baseIsOver) ? "shaking" : "";
-
-    var position = `translate(${1200 - this.props.index*450},0)`;
+    var position = `translate(${(_DotsStore.getNbContainers() - this.props.index - 1)*(this.state.width+20)},0)`;
 
     return (
 
       <g transform={position}>
-        <rect x="0" y="0" width={this.state.width} height={this.state.height} fill="#fff" onClick={this.addDot.bind(this)} />
+        <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
+        <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
@@ -169,7 +173,7 @@ class SVGFullSizeContainer extends React.Component {
     super();
 
     this.state = {
-      dots : [0, 0, 0]
+      dots : [0, 0, 0, 0, 0]
     }
   }
 
@@ -193,12 +197,20 @@ class SVGFullSizeContainer extends React.Component {
 
     return (
       <div className="SVGContainer">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
+        <div className="title">Exploding Dots!</div>
 
-          <SVGContainer className="SVGContainer" index={2} positive={this.state.dots[2].length}  baseIsOver={false} />
-          <SVGContainer className="SVGContainer" index={1} positive={this.state.dots[1].length}  baseIsOver={false} />
-          <SVGContainer className="SVGContainer" index={0} positive={this.state.dots[0].length}  baseIsOver={false} />
-        </svg>
+
+        <div className="scrollContainer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
+            <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
+            <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
+            <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
+            <SVGContainer className="SVGContainer" index={1} dots={this.state.dots}  baseIsOver={false} />
+            <SVGContainer className="SVGContainer" index={0} dots={this.state.dots}  baseIsOver={false} />
+          </svg>
+
+        </div>
       </div>
     );
   }
@@ -309,6 +321,8 @@ class App extends Component {
           </div>
 
           <div className="dotsContainers">
+            <DotsContainer index="4" />
+            <DotsContainer index="3" />
             <DotsContainer index="2" />
             <DotsContainer index="1" />
             <DotsContainer index="0" />
