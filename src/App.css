@@ -10,6 +10,11 @@ body
   text-align: center; 
 }
 
+/*:local .new{
+	composes: App;
+	border: 1px red solid;
+}*/
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
