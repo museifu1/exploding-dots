@@ -77,7 +77,7 @@ class DotsContainer extends Component{
 
   render() {
 
-    var baseIsOver = (this.state.value > (this.state.base-1));
+    //var baseIsOver = (this.state.value > (this.state.base-1));
 
 
     return (
@@ -302,13 +302,13 @@ class ConfigPanel extends Component{
 
 class App extends Component {
 
-  constructor(options){
+  /*constructor(options){
 
       super(options); 
 
       //this.store = new DotsStore(AppDispatcher, options.state);
 
-  }
+  }*/
 
 
   render() {
@@ -332,7 +332,7 @@ class App extends Component {
           </div>
 
           <div className="dotsFullSizeContainers">
-            <SVGFullSizeContainer className="SVGFullSizeContainer" baseIsOver={false} />
+            <SVGFullSizeContainer className="SVGFullSizeContainer" />
 
           </div>
 

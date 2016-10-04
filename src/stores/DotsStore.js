@@ -1,4 +1,3 @@
-import AppDispatcher from '../dispatchers/AppDispatcher';
 import { EventEmitter } from 'events';
 /*import assign from 'object-assign';*/
 import {DOTS} from '../constants/DotsConstants';
@@ -12,6 +11,8 @@ class DotsStore extends EventEmitter {
   constructor(dispatcher, state){
   	
   	super();
+
+    this.setMaxListeners(20);
 
   	if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
     if (state) {      		console.error('app is created with initial state', state);    }
