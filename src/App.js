@@ -1,10 +1,11 @@
+require("style-loader!css-loader");
+
+import styles from './App.css';
 import React, { Component } from 'react';
-import './App.css';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
 import AppDispatcher from './dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
-
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -298,9 +299,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className={ styles.App }>
         <div className="App-header">
-          <h2>Exploding dots!</h2>
+        <h2>Exploding dots</h2>
         </div>
         <div className="App-intro">
 
