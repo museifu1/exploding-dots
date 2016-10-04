@@ -92,8 +92,8 @@ class DotsStore extends EventEmitter {
     for(var i = 0; i < nbDots; i++){
 
       a.push({
-        x : Math.min(Math.max(Math.random() * this.state.containerWidth, this.getDotsRayon()), this.state.containerWidth-this.getDotsRayon()),
-        y : Math.min(Math.max(Math.random() * this.state.containerHeight,this.getDotsRayon()), this.state.containerHeight-this.getDotsRayon())
+        x : Math.random() * this.state.containerWidth,
+        y : Math.random() * this.state.containerHeight
       });
     }
 
@@ -137,6 +137,30 @@ class DotsStore extends EventEmitter {
   getNbContainers(){
     return this.state.nbContainers;
   }
+
+  getLeftLimit(){
+    return this.state.containerWidth-this.state.dotsRayon - 10;
+  }
+
+  getRightLimit(){
+    return this.state.dotsRayon-10;
+  }
+
+  getTopLimit(){
+    return this.state.dotsRayon+60;
+  }
+
+  getBottomLimit(){
+    return this.state.containerHeight - this.state.dotsRayon + 60;
+  }
+
+  /*getContainerWidth(){
+    return this.state.containerWidth;
+  }
+
+  getContainerHeight(){
+    return this.state.containerHeight;
+  }*/
 
   getState () {
     //return this.state;
