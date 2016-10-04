@@ -70,7 +70,7 @@ body
   transform: translate3d(0, 0, 0);
 }
 
-.shaking
+g.shaking circle
 {
   animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;
   animation-iteration-count: infinite;
@@ -80,19 +80,19 @@ body
 
 @keyframes shake {
   3%, 22% {
-    transform: translate3d(-1px, 0, 0);
+    transform: translate3d(-2px, 0, 0);
   }
   
   5%, 20% {
-    transform: translate3d(1px, 0, 0);
+    transform: translate3d(2px, 0, 0);
   }
 
   8%, 13%, 18% {
-    transform: translate3d(-1px, 0, 0);
+    transform: translate3d(-2px, 0, 0);
   }
 
   10%, 15% {
-    transform: translate3d(1px, 0, 0);
+    transform: translate3d(2px, 0, 0);
   }
   25%{
      transform: translate3d(0px, 0, 0);

@@ -101,7 +101,8 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 450
+      height : 450,
+      base : 2
     }
 
     this.dots = [];
@@ -109,13 +110,18 @@ class SVGContainer extends React.Component {
 
   // Add change listeners to stores
   componentDidMount() {
-    
+     _DotsStore.addChangeListener(this._onChange.bind(this));
     d3.select(this.refs.zone).on("click", this.addDot.bind(this) );
+  }
+
+  _onChange(){
+    this.setState(getDotsStateByIndex(this.props.index));
   }
 
   // Remove change listeners from stores
   componentWillUnmount() {
     d3.select(this.refs.zone).on("click", null );
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
   }
 
   addDot(event){
@@ -143,12 +149,12 @@ class SVGContainer extends React.Component {
     }
 
 
-    var style = (this.props.baseIsOver) ? "shaking" : "";
+    var style = (this.state.base <= this.dots.length) ? "shaking" : "";
     var position = `translate(${(_DotsStore.getNbContainers() - this.props.index - 1)*(this.state.width+20)},0)`;
 
     return (
 
-      <g transform={position}>
+      <g transform={position} className={style}>
         <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
         <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
 
@@ -202,11 +208,11 @@ class SVGFullSizeContainer extends React.Component {
         <div className="scrollContainer">
 
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
-            <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={1} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={0} dots={this.state.dots}  baseIsOver={false} />
+            <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
+            <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
+            <SVGContainer className="SVGContainer" index={2} dots={this.state.dots} />
+            <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
+            <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
           </svg>
 
         </div>
