@@ -53,6 +53,11 @@ body
   background-color: #f0f0f0;
 }
 
+.SVGContainer svg text.title
+{
+  font-size: 35px;
+}
+
 .dotsContainer .nbDots{
     width: 100%;
     float: left;

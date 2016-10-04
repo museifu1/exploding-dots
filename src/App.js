@@ -148,15 +148,17 @@ class SVGContainer extends React.Component {
       }
     }
 
-
+    var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
     var style = (this.state.base <= this.dots.length) ? "shaking" : "";
-    var position = `translate(${(_DotsStore.getNbContainers() - this.props.index - 1)*(this.state.width+20)},0)`;
+    var position = `translate(${reverseIndex*(this.state.width+20)},0)`;
 
     return (
 
       <g transform={position} className={style}>
-        <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
-        <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
+        <rect x="0" y="10" width={this.state.width} height={this.state.height+60} fill="#e1e1e1" />
+        <rect ref="zone" x="-10" y="60" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
+        <rect x="-10" y="0" width={this.state.width} height="60" fill="#f1f1f1" />
+        <text x={this.state.width/2} y="40" textAnchor="middle" className="title">{Math.pow(10,this.props.index)}</text>
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
