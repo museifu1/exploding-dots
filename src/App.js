@@ -218,32 +218,65 @@ class SVGFullSizeContainer extends React.Component {
 class SVGDot extends React.Component {
 
 
+
   constructor(props){
     super();
 
     this.state = {selected:false};
   }
 
+  componentDidMount() {
+    d3.select(this.refs.dot).call(d3.drag()
+      .on("start", this.dragstarted.bind(this))
+      .on("drag", this.dragged.bind(this))
+      .on("end", this.dragended.bind(this)));
+  }
 
-  handleMouseDown(){
+  componentWillUnmount() {
+    d3.drag()
+    .subject(this.refs.dot)
+    .on("start", null)
+    .on("drag", null)
+    .on("end", null);
+  }
+
+
+  dragstarted(event){
     
+    console.log("dragstarted");
+
+
+
     this.setState({
       selected: true
     });
   }
 
-  handleMouseUp(){
+  dragended(event){
+
+    console.log("dragended")
+
     this.setState({
       selected: false
     });
   }
+
+  dragged(event){
+    console.log("dragged")
+
+    d3.select(this.refs.dot)
+      .attr("cx", d3.event.x)
+      .attr("cy", d3.event.y);
+  }
+
+
 
   render(){
 
     var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
     //if( !this.props.positive ) {
-      return (<circle cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
+      return (<circle ref="dot" cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} />)
     //}
 
     /*return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
