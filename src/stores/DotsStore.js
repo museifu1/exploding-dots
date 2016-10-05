@@ -174,19 +174,19 @@ class DotsStore extends EventEmitter {
   }
 
   getLeftLimit(){
-    return this.state.containerWidth-this.state.dotsRayon - 10;
+    return this.state.containerWidth - (this.state.dotsRayon + 10);
   }
 
   getRightLimit(){
-    return this.state.dotsRayon-10;
+    return this.state.dotsRayon + 30;
   }
 
   getTopLimit(){
-    return this.state.dotsRayon+60;
+    return this.state.dotsRayon + 70;
   }
 
   getBottomLimit(){
-    return this.state.containerHeight - this.state.dotsRayon + 60;
+    return this.state.containerHeight - (this.state.dotsRayon + 170);
   }
 
   /*getContainerWidth(){

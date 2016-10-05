@@ -1,5 +1,6 @@
 
 import styles from './App.css';
+import fonts from './font-awesome.min.css';
 import React, { Component } from 'react';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
@@ -102,7 +103,7 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 450,
+      height : 300,
       base : 2
     }
 
@@ -150,7 +151,7 @@ class SVGContainer extends React.Component {
     }
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
-    var style = (this.state.base <= this.dots.length) ? "shaking" : "";
+    var style = (this.state.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
     var position = `translate(${reverseIndex*(this.state.width+20)},0)`;
 
     return (
@@ -250,7 +251,7 @@ class SVGDot extends React.Component {
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
-
+    console.log(this, _DotsStore.getTopLimit(), _DotsStore.getRightLimit(), _DotsStore.getBottomLimit(), _DotsStore.getLeftLimit());
     return (<circle cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
   }
 }
@@ -319,7 +320,13 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-        <h2>Exploding <strong>dots</strong><span><button>1&larr;{this.state.base}</button><button className="explode">✸</button></span></h2>
+	        <h2>Exploding <strong>dots</strong>
+	        	<span>
+	        		<button className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
+	        		<button><i className="fa fa-play"></i></button>
+	        		<button className="explode"><i className="fa fa-magic"></i></button>
+	        	</span>
+	        </h2>
         </div>
         <div className="App-intro">
 
