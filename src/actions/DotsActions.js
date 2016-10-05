@@ -20,7 +20,7 @@ export default class DotsActions {
         };
 
 
-        if(_x != undefined && _y != undefined){
+        if(_x !== undefined && _y !== undefined){
             obj.newdot = {
                 x : _x,
                 y : _y
