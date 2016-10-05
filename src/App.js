@@ -162,7 +162,7 @@ class SVGContainer extends React.Component {
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
-            transitionEnterTimeout={300} transitionLeaveTimeout={300} >
+            transitionEnterTimeout={300} transitionLeaveTimeout={500} >
           {this.dots}
         </ReactCSSTransitionGroup >
       </g>

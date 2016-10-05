@@ -116,12 +116,14 @@ g.shaking circle
 }
 
 .svgDot-leave {
-  animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both !important;
+  /*animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both !important;*/
+  animation:dotExplodeAnimation 0.5s cubic-bezier(.36,.07,.19,.97) both, dotFadeAnimation 0.5s !important;
+  animation-iteration-count:1;
   transform-origin: center;
 }
 
 .svgDot-leave.svgDot-leave-active {
-
+  opacity: 0;
 }
 
 
@@ -137,6 +139,24 @@ g.shaking circle
   100% {  transform:scale(0);   }
 }
 
+@keyframes dotExplodeAnimation {
+  0% {    transform:scale(1);  }
+  30% {    
+    transform:scale(0.5);
+    fill:#ed8c4c;   
+
+  }
+  100% {  
+    transform:scale(3); 
+    fill:#fbf8db;
+  }
+}
+
+@keyframes dotFadeAnimation {
+  0% {    opacity: 1;  }
+  80% {   opacity: 0.8;  }
+  100% {  opacity: 0;  }
+}
 
 
 
