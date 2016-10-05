@@ -161,7 +161,7 @@ g.shaking circle
 
 .svgDot-enter {
   transform-origin: center;
-  animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both;
+  animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both !important;
 }
 
 .svgDot-enter.svgDot-enter-active {
@@ -169,7 +169,7 @@ g.shaking circle
 }
 
 .svgDot-leave {
-  animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both;
+  animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both !important;
   transform-origin: center;
 }
 

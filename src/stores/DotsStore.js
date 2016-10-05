@@ -45,6 +45,10 @@ class DotsStore extends EventEmitter {
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
+        case DOTS.ONE_STEP_STABILIZE:
+          _this.oneStepStabilize();
+          break;
+          
         case DOTS.STABILIZE:
           _this.stablize();         
           break;
@@ -73,6 +77,36 @@ class DotsStore extends EventEmitter {
       dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + Math.floor(dot.length / base));
       dots[index] = _this.updateDotsArray(dots[index], dot.length % base);
     });
+  }
+
+
+  oneStepStabilize(startIndex = 0){
+
+    var dots = this.state.dots;
+    var base = this.state.base;
+    var _this = this;
+
+    var stepIsDone = false;
+
+
+    dots.forEach(function(dot, index){
+
+      if(!stepIsDone && index >= startIndex ){
+
+        if(dots.length <= index+1){
+          dots.push([]);  
+        }
+
+        if(dot.length >= base){
+          dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + 1);
+          dots[index] = _this.updateDotsArray(dots[index], dot.length - base);
+
+          stepIsDone = true;
+        }
+      }
+    });
+
+
   }
 
 

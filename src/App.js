@@ -279,6 +279,11 @@ class ConfigPanel extends Component{
   }
 
 
+  oneStepStabilize(event){
+    DotsActions.oneStepStabilize();
+  }
+
+
   render() {
     return (
       <div className="configPanel" onChange={this._select} value={this.state.base}>
@@ -289,6 +294,7 @@ class ConfigPanel extends Component{
         </select>
 
         <input type="button" value="Stabiliser le système" onClick={this.stabilize} />
+        <input type="button" value="Stabiliser une étape" onClick={this.oneStepStabilize} />
       </div>
     );
   }
