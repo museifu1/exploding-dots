@@ -31,10 +31,16 @@ export default class DotsActions {
     }
 
 
+    static oneStepStabilize(step = 0){
+        AppDispatcher.dispatch({
+            actionType : DOTS.ONE_STEP_STABILIZE,
+            step : step
+        });        
+    }
+
     static stabilize(){
     	AppDispatcher.dispatch({
     		actionType : DOTS.STABILIZE
     	});
-
     }
 }
