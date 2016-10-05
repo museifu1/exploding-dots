@@ -157,7 +157,7 @@ class SVGContainer extends React.Component {
     return (
 
       <g transform={position} className={style}>
-        <rect className="dotBox" />
+        <rect ref="zone" className="dotBox" />
         
         <rect className="dotBoxTitle" />
         <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(10,this.props.index)}</text>

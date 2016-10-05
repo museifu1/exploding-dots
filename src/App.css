@@ -255,7 +255,7 @@ body {
 	padding: 10px 0;
 }
 .dotsContainers{
-	// display: none;
+	display: none;
 }
 .dotBox{
 	fill: #FFF;
