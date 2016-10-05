@@ -202,11 +202,14 @@ class SVGFullSizeContainer extends React.Component {
         <div className="scrollContainer">
 
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
-            <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={1} dots={this.state.dots}  baseIsOver={false} />
-            <SVGContainer className="SVGContainer" index={0} dots={this.state.dots}  baseIsOver={false} />
+            <g>
+              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
+              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
+              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
+              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots}  baseIsOver={false} />
+              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots}  baseIsOver={false} />
+            </g>
+            <g id="stage"></g>
           </svg>
 
         </div>
@@ -245,7 +248,9 @@ class SVGDot extends React.Component {
     
     console.log("dragstarted");
 
-
+    var stage = d3.select("#stage");
+    var stageNode = stage.node();
+    stageNode.appendChild(d3.select(this.refs.dot).node());
 
     this.setState({
       selected: true
@@ -262,7 +267,10 @@ class SVGDot extends React.Component {
   }
 
   dragged(event){
-    console.log("dragged")
+    console.log("dragged");
+
+    //var stage = d3.select("#stage").attr("transform");
+    //var translate = d3.transform(stage).translate;  //returns [0,-25]
 
     d3.select(this.refs.dot)
       .attr("cx", d3.event.x)
