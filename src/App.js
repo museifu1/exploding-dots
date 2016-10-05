@@ -291,17 +291,10 @@ class SVGDot extends React.Component {
 
     var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
-<<<<<<< .mine
-    //if( !this.props.positive ) {
-      return (<circle ref="dot" cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} />)
-    //}
-=======
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
->>>>>>> .theirs
-
-    return (<circle cx={x} cy={y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
+    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} />)
   }
 }
 
