@@ -208,11 +208,14 @@ class SVGFullSizeContainer extends React.Component {
         <div className="scrollContainer">
 
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 300">
-            <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
-            <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
-            <SVGContainer className="SVGContainer" index={2} dots={this.state.dots} />
-            <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
-            <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
+            <g>
+              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
+            </g>
+            <g id="stage"></g>
           </svg>
 
         </div>
@@ -224,25 +227,63 @@ class SVGFullSizeContainer extends React.Component {
 class SVGDot extends React.Component {
 
 
+
   constructor(props){
     super();
 
     this.state = {selected:false};
   }
 
+  componentDidMount() {
+    d3.select(this.refs.dot).call(d3.drag()
+      .on("start", this.dragstarted.bind(this))
+      .on("drag", this.dragged.bind(this))
+      .on("end", this.dragended.bind(this)));
+  }
 
-  handleMouseDown(){
+  componentWillUnmount() {
+    d3.drag()
+    .subject(this.refs.dot)
+    .on("start", null)
+    .on("drag", null)
+    .on("end", null);
+  }
+
+
+  dragstarted(event){
     
+    console.log("dragstarted");
+
+    var stage = d3.select("#stage");
+    var stageNode = stage.node();
+    stageNode.appendChild(d3.select(this.refs.dot).node());
+
     this.setState({
       selected: true
     });
   }
 
-  handleMouseUp(){
+  dragended(event){
+
+    console.log("dragended")
+
     this.setState({
       selected: false
     });
   }
+
+  dragged(event){
+    console.log("dragged");
+
+    //var stage = d3.select("#stage").attr("transform");
+    //var translate = d3.transform(stage).translate;  //returns [0,-25]
+
+    d3.select(this.refs.dot)
+      .attr("cx", d3.event.x)
+      .attr("cy", d3.event.y);
+  }
+
+
 
   render(){
 
@@ -250,8 +291,8 @@ class SVGDot extends React.Component {
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
-    console.log(this, _DotsStore.getTopLimit(), _DotsStore.getRightLimit(), _DotsStore.getBottomLimit(), _DotsStore.getLeftLimit());
-    return (<circle cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
+
+    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />)
   }
 }
 
