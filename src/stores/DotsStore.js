@@ -1,4 +1,3 @@
-import AppDispatcher from '../dispatchers/AppDispatcher';
 import { EventEmitter } from 'events';
 /*import assign from 'object-assign';*/
 import {DOTS} from '../constants/DotsConstants';
@@ -12,6 +11,8 @@ class DotsStore extends EventEmitter {
   constructor(dispatcher, state){
   	
   	super();
+
+    this.setMaxListeners(20);
 
   	if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
     if (state) {      		console.error('app is created with initial state', state);    }
@@ -44,6 +45,10 @@ class DotsStore extends EventEmitter {
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
+        case DOTS.ONE_STEP_STABILIZE:
+          _this.oneStepStabilize();
+          break;
+          
         case DOTS.STABILIZE:
           _this.stablize();         
           break;
@@ -75,6 +80,36 @@ class DotsStore extends EventEmitter {
   }
 
 
+  oneStepStabilize(startIndex = 0){
+
+    var dots = this.state.dots;
+    var base = this.state.base;
+    var _this = this;
+
+    var stepIsDone = false;
+
+
+    dots.forEach(function(dot, index){
+
+      if(!stepIsDone && index >= startIndex ){
+
+        if(dots.length <= index+1){
+          dots.push([]);  
+        }
+
+        if(dot.length >= base){
+          dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + 1);
+          dots[index] = _this.updateDotsArray(dots[index], dot.length - base);
+
+          stepIsDone = true;
+        }
+      }
+    });
+
+
+  }
+
+
   updateDotsArray(dotsArray, nbDots){
 
     if(dotsArray.length > nbDots){
@@ -92,8 +127,8 @@ class DotsStore extends EventEmitter {
     for(var i = 0; i < nbDots; i++){
 
       a.push({
-        x : Math.min(Math.max(Math.random() * this.state.containerWidth, this.getDotsRayon()), this.state.containerWidth-this.getDotsRayon()),
-        y : Math.min(Math.max(Math.random() * this.state.containerHeight,this.getDotsRayon()), this.state.containerHeight-this.getDotsRayon())
+        x : Math.random() * this.state.containerWidth,
+        y : Math.random() * this.state.containerHeight
       });
     }
 
@@ -137,6 +172,30 @@ class DotsStore extends EventEmitter {
   getNbContainers(){
     return this.state.nbContainers;
   }
+
+  getLeftLimit(){
+    return this.state.containerWidth-this.state.dotsRayon - 10;
+  }
+
+  getRightLimit(){
+    return this.state.dotsRayon-10;
+  }
+
+  getTopLimit(){
+    return this.state.dotsRayon+60;
+  }
+
+  getBottomLimit(){
+    return this.state.containerHeight - this.state.dotsRayon + 60;
+  }
+
+  /*getContainerWidth(){
+    return this.state.containerWidth;
+  }
+
+  getContainerHeight(){
+    return this.state.containerHeight;
+  }*/
 
   getState () {
     //return this.state;

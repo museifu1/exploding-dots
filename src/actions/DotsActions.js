@@ -20,7 +20,7 @@ export default class DotsActions {
         };
 
 
-        if(_x != undefined && _y != undefined){
+        if(_x !== undefined && _y !== undefined){
             obj.newdot = {
                 x : _x,
                 y : _y
@@ -31,10 +31,16 @@ export default class DotsActions {
     }
 
 
+    static oneStepStabilize(step = 0){
+        AppDispatcher.dispatch({
+            actionType : DOTS.ONE_STEP_STABILIZE,
+            step : step
+        });        
+    }
+
     static stabilize(){
     	AppDispatcher.dispatch({
     		actionType : DOTS.STABILIZE
     	});
-
     }
 }

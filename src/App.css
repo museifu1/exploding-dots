@@ -53,6 +53,11 @@ body
   background-color: #f0f0f0;
 }
 
+.SVGContainer svg text.title
+{
+  font-size: 35px;
+}
+
 .dotsContainer .nbDots{
     width: 100%;
     float: left;
@@ -70,7 +75,7 @@ body
   transform: translate3d(0, 0, 0);
 }
 
-.shaking
+g.shaking circle
 {
   animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;
   animation-iteration-count: infinite;
@@ -80,19 +85,19 @@ body
 
 @keyframes shake {
   3%, 22% {
-    transform: translate3d(-1px, 0, 0);
+    transform: translate3d(-2px, 0, 0);
   }
   
   5%, 20% {
-    transform: translate3d(1px, 0, 0);
+    transform: translate3d(2px, 0, 0);
   }
 
   8%, 13%, 18% {
-    transform: translate3d(-1px, 0, 0);
+    transform: translate3d(-2px, 0, 0);
   }
 
   10%, 15% {
-    transform: translate3d(1px, 0, 0);
+    transform: translate3d(2px, 0, 0);
   }
   25%{
      transform: translate3d(0px, 0, 0);
@@ -103,7 +108,7 @@ body
 
 .svgDot-enter {
   transform-origin: center;
-  animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both;
+  animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both !important;
 }
 
 .svgDot-enter.svgDot-enter-active {
@@ -111,12 +116,14 @@ body
 }
 
 .svgDot-leave {
-  animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both;
+  /*animation: dotZoomAnimationOut 0.2s cubic-bezier(.36,.07,.19,.97) both !important;*/
+  animation:dotExplodeAnimation 0.5s cubic-bezier(.36,.07,.19,.97) both, dotFadeAnimation 0.5s !important;
+  animation-iteration-count:1;
   transform-origin: center;
 }
 
 .svgDot-leave.svgDot-leave-active {
-
+  opacity: 0;
 }
 
 
@@ -132,6 +139,24 @@ body
   100% {  transform:scale(0);   }
 }
 
+@keyframes dotExplodeAnimation {
+  0% {    transform:scale(1);  }
+  30% {    
+    transform:scale(0.5);
+    fill:#ed8c4c;   
+
+  }
+  100% {  
+    transform:scale(3); 
+    fill:#fbf8db;
+  }
+}
+
+@keyframes dotFadeAnimation {
+  0% {    opacity: 1;  }
+  80% {   opacity: 0.8;  }
+  100% {  opacity: 0;  }
+}
 
 
 

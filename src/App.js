@@ -77,7 +77,7 @@ class DotsContainer extends Component{
 
   render() {
 
-    var baseIsOver = (this.state.value > (this.state.base-1));
+    //var baseIsOver = (this.state.value > (this.state.base-1));
 
 
     return (
@@ -101,7 +101,8 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 450
+      height : 450,
+      base : 2
     }
 
     this.dots = [];
@@ -109,13 +110,18 @@ class SVGContainer extends React.Component {
 
   // Add change listeners to stores
   componentDidMount() {
-    
+     _DotsStore.addChangeListener(this._onChange.bind(this));
     d3.select(this.refs.zone).on("click", this.addDot.bind(this) );
+  }
+
+  _onChange(){
+    this.setState(getDotsStateByIndex(this.props.index));
   }
 
   // Remove change listeners from stores
   componentWillUnmount() {
     d3.select(this.refs.zone).on("click", null );
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
   }
 
   addDot(event){
@@ -142,19 +148,21 @@ class SVGContainer extends React.Component {
       }
     }
 
-
-    var style = (this.props.baseIsOver) ? "shaking" : "";
-    var position = `translate(${(_DotsStore.getNbContainers() - this.props.index - 1)*(this.state.width+20)},0)`;
+    var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
+    var style = (this.state.base <= this.dots.length) ? "shaking" : "";
+    var position = `translate(${reverseIndex*(this.state.width+20)},0)`;
 
     return (
 
-      <g transform={position}>
-        <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
-        <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
+      <g transform={position} className={style}>
+        <rect x="0" y="10" width={this.state.width} height={this.state.height+60} fill="#e1e1e1" />
+        <rect ref="zone" x="-10" y="60" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
+        <rect x="-10" y="0" width={this.state.width} height="60" fill="#f1f1f1" />
+        <text x={this.state.width/2} y="40" textAnchor="middle" className="title">{Math.pow(10,this.props.index)}</text>
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
-            transitionEnterTimeout={300} transitionLeaveTimeout={300} >
+            transitionEnterTimeout={300} transitionLeaveTimeout={500} >
           {this.dots}
         </ReactCSSTransitionGroup >
       </g>
@@ -203,11 +211,11 @@ class SVGFullSizeContainer extends React.Component {
 
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
             <g>
-              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
-              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
-              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
-              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots}  baseIsOver={false} />
-              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots}  baseIsOver={false} />
+              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
             </g>
             <g id="stage"></g>
           </svg>
@@ -283,14 +291,17 @@ class SVGDot extends React.Component {
 
     var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
+<<<<<<< .mine
     //if( !this.props.positive ) {
       return (<circle ref="dot" cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} />)
     //}
+=======
+    var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
+    var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
-    /*return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
-              <circle cx={this.props.x} cy={this.props.y} r={40} fill={color} stroke={2} />
-              <circle cx={this.props.x} cy={this.props.y} r={35} fill="white" stroke={2} />
-            </g>);*/
+>>>>>>> .theirs
+
+    return (<circle cx={x} cy={y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
   }
 }
 
@@ -319,6 +330,11 @@ class ConfigPanel extends Component{
   }
 
 
+  oneStepStabilize(event){
+    DotsActions.oneStepStabilize();
+  }
+
+
   render() {
     return (
       <div className="configPanel" onChange={this._select} value={this.state.base}>
@@ -329,6 +345,7 @@ class ConfigPanel extends Component{
         </select>
 
         <input type="button" value="Stabiliser le système" onClick={this.stabilize} />
+        <input type="button" value="Stabiliser une étape" onClick={this.oneStepStabilize} />
       </div>
     );
   }
@@ -339,13 +356,13 @@ class ConfigPanel extends Component{
 
 class App extends Component {
 
-  constructor(options){
+  /*constructor(options){
 
       super(options); 
 
       //this.store = new DotsStore(AppDispatcher, options.state);
 
-  }
+  }*/
 
 
   render() {
@@ -369,7 +386,7 @@ class App extends Component {
           </div>
 
           <div className="dotsFullSizeContainers">
-            <SVGFullSizeContainer className="SVGFullSizeContainer" baseIsOver={false} />
+            <SVGFullSizeContainer className="SVGFullSizeContainer" />
 
           </div>
 
