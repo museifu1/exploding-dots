@@ -86,10 +86,12 @@ class DotsStore extends EventEmitter {
     var base = this.state.base;
     var _this = this;
 
+    var stepIsDone = false;
+
 
     dots.forEach(function(dot, index){
 
-      if(index >= startIndex){
+      if(!stepIsDone && index >= startIndex ){
 
         if(dots.length <= index+1){
           dots.push([]);  
@@ -99,7 +101,7 @@ class DotsStore extends EventEmitter {
           dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + 1);
           dots[index] = _this.updateDotsArray(dots[index], dot.length - base);
 
-          return false;
+          stepIsDone = true;
         }
       }
     });
