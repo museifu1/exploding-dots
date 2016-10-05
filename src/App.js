@@ -1,6 +1,7 @@
 
 import styles from './App.css';
-import fonts from './font-awesome.min.css';
+import './font-awesome.min.css';
+import logo from './scolab.png';
 import React, { Component } from 'react';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
@@ -353,42 +354,53 @@ class App extends Component {
       //this.store = new DotsStore(AppDispatcher, options.state);
       this.state = {base : 2 };
 
+      console.log(logo);
+
   }
 
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-	        <h2>Exploding <strong>dots</strong>
-	        	<span>
-	        		<button className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
-	        		<button><i className="fa fa-play"></i></button>
-	        		<button className="explode"><i className="fa fa-magic"></i></button>
-	        	</span>
-	        </h2>
-        </div>
-        <div className="App-intro">
+    <div className="scolab">
+		<div className="App">
+			<div className="App-header">
+			    <h2>Exploding <strong>dots</strong>
+			    	<span>
+			    		<button className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
+			    		<button><i className="fa fa-play"></i></button>
+			    		<button className="explode"><i className="fa fa-magic"></i></button>
+			    	</span>
+			    </h2>
+			</div>
+			<div className="App-intro">
 
-          <div className="configPanelWrapper">
-            <ConfigPanel />
-          </div>
+			  <div className="machine">
+			  	0 <i className="fa fa-arrows-h"></i> <span>?</span>
+			  </div>
 
-          <div className="dotsContainers">
-            <DotsContainer index="4" />
-            <DotsContainer index="3" />
-            <DotsContainer index="2" />
-            <DotsContainer index="1" />
-            <DotsContainer index="0" />
-          </div>
+			  <div className="configPanelWrapper">
+			    <ConfigPanel />
+			  </div>
 
-          <div className="dotsFullSizeContainers">
-            <SVGFullSizeContainer className="SVGFullSizeContainer" />
+			  <div className="dotsContainers">
+			    <DotsContainer index="4" />
+			    <DotsContainer index="3" />
+			    <DotsContainer index="2" />
+			    <DotsContainer index="1" />
+			    <DotsContainer index="0" />
+			  </div>
 
-          </div>
+			  <div className="dotsFullSizeContainers">
+			    <SVGFullSizeContainer className="SVGFullSizeContainer" />
+
+			  </div>
 
 
-        </div>
+			</div>
+		</div>
+		<div className="credits">
+			<a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
+		</div>
       </div>
     );
   }
