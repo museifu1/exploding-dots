@@ -274,12 +274,13 @@ body {
 	y: 1%;
 }
 .dotBoxTitleText{
-	display: none;
-	// fill: #CCC;
-	height: 60px;
-	width: 18%;
-	x: 1%;
-	y: 1%;
+	// display: none;
+	// fill: red;
+	font-size: 35px;
+	// height: 60px;
+	// width: 18%;
+	// x: 150;
+	// y: 40;
 }
 .dotCircle{
 	fill: #34d293;
