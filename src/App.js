@@ -150,8 +150,7 @@ class SVGContainer extends React.Component {
     return (
 
       <g transform={position}>
-        <rect x="0" y="5" width={this.state.width} height={this.state.height} fill="#e1e1e1" />
-        <rect ref="zone" x="-5" y="0" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
+        <rect className="dotBox" ref="zone" />
 
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
@@ -197,12 +196,9 @@ class SVGFullSizeContainer extends React.Component {
 
     return (
       <div className="SVGContainer">
-        <div className="title">Exploding Dots!</div>
-
-
         <div className="scrollContainer">
 
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 400">
             <SVGContainer className="SVGContainer" index={4} dots={this.state.dots}  baseIsOver={false} />
             <SVGContainer className="SVGContainer" index={3} dots={this.state.dots}  baseIsOver={false} />
             <SVGContainer className="SVGContainer" index={2} dots={this.state.dots}  baseIsOver={false} />
@@ -244,7 +240,7 @@ class SVGDot extends React.Component {
     var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
 
     //if( !this.props.positive ) {
-      return (<circle cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
+      return (<circle className="dotCircle" cx={this.props.x} cy={this.props.y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} />)
     //}
 
     /*return (<g onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)}>
@@ -270,7 +266,6 @@ class ConfigPanel extends Component{
 
   _select(event){
     DotsActions.changeBase(Number.parseInt(event.target.value));
-
   }
 
 
@@ -304,6 +299,7 @@ class App extends Component {
       super(options); 
 
       //this.store = new DotsStore(AppDispatcher, options.state);
+      this.state = {base : 2 };
 
   }
 
@@ -312,7 +308,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-        <h2>Exploding dots</h2>
+        <h2>Exploding <strong>dots</strong><span><button>1&larr;{this.state.base}</button><button className="explode">✸</button></span></h2>
         </div>
         <div className="App-intro">
 
