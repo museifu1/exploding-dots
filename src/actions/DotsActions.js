@@ -11,6 +11,36 @@ export default class DotsActions {
     	});
     }
 
+
+    static dotAdded(_zoneIndex, _x, _y){
+
+        var obj = {
+            actionType : DOTS.DOT_ADDED,
+            zoneIndex : _zoneIndex
+        };
+
+
+        if(_x !== undefined && _y !== undefined){
+            obj.newdot = {
+                x : _x,
+                y : _y
+            }
+        }
+
+        AppDispatcher.dispatch(obj);
+    }
+
+
+    static dotRemoved(_zoneIndex, _dotIndex = -1){
+        
+        AppDispatcher.dispatch({
+            actionType : DOTS.DOT_REMOVED,
+            zoneIndex : _zoneIndex,
+            dotIndex : _dotIndex
+        });
+    }
+
+
     static dotsChanged(_index, _value, _x, _y){
 
         var obj = {

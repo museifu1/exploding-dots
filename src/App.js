@@ -45,8 +45,7 @@ class DotsContainer extends Component{
 
   minusOne(){
     if(this.state.value > 0){
-      var v = this.state.value-1;
-      DotsActions.dotsChanged(this.state.index, v);
+      DotsActions.dotRemoved(this.state.index);
     }
   }
 
@@ -133,17 +132,17 @@ class SVGContainer extends React.Component {
   
   render() {
 
-
     var statedots = _DotsStore.getDotsValue()[this.props.index];
-    var positive = statedots.length;
 
-    if( this.dots.length > positive ) {
-      this.dots.splice( positive, this.dots.length - positive );
-    } else if( this.dots.length < positive ) {
-      for( var i = this.dots.length; i < positive; i++) {
-        this.dots.push(<SVGDot key={i} x={statedots[i].x} y={statedots[i].y} positive={true} zoneIndex={this.props.index} />)
-      }
-    }
+    var zoneIndex = this.props.index;
+    var _this = this;
+
+    this.dots = [];
+    statedots.forEach(function(dot, index){
+        var key = zoneIndex + "." + dot.x + "." + dot.y;
+        _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} positive={true} zoneIndex={zoneIndex} />);
+    });
+
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
     var style = (this.state.base <= this.dots.length) ? "shaking" : "";
@@ -229,6 +228,9 @@ class SVGDot extends React.Component {
 
 
   constructor(props){
+
+
+
     super();
 
     this.state = {
@@ -283,8 +285,8 @@ class SVGDot extends React.Component {
     });
 
     
-    var newNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex)-1;
-    DotsActions.dotsChanged(this.state.zoneIndex, newNbOfDots);
+
+    DotsActions.dotRemoved(this.state.zoneIndex, this.props.index);
 
     var newNbOfDots = _DotsStore.getDotsValueByIndex(currentZoneIndex)+1;
     var pos = d3.mouse(currentZone);
@@ -297,10 +299,6 @@ class SVGDot extends React.Component {
     d3.select("#stage circle")
       .attr("cx", m[0])
       .attr("cy", m[1]);
-
-      /*d3.select(this.refs.dot)
-        .attr('cx', d3.event.x)
-        .attr('cy', d3.event.y);*/
   }
 
 
