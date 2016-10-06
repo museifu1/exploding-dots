@@ -104,7 +104,7 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 300,
+      height : 400,
       base : 2
     }
 
@@ -208,7 +208,7 @@ class SVGFullSizeContainer extends React.Component {
       <div className="SVGContainer">
         <div className="scrollContainer">
 
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 300">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 400">
             <g>
               <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
               <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
@@ -353,9 +353,27 @@ class App extends Component {
 
       //this.store = new DotsStore(AppDispatcher, options.state);
       this.state = {base : 2 };
+      this.changeBase = this.changeBase.bind(this);
+  }
 
-      console.log(logo);
+  changeBase(event){
+	let bases = [2, 10, 16];
+	let next = false;
+	for (let base of bases) {
+	    if(this.state.base < base && !next) next = base;
+	}
+	if(next == false) next = bases[0];
+	DotsActions.changeBase(next);
+	this.setState({ base : next });
+  }
 
+
+  stabilize(event){
+    DotsActions.stabilize();
+  }
+
+  oneStepStabilize(event){
+    DotsActions.oneStepStabilize();
   }
 
 
@@ -366,9 +384,9 @@ class App extends Component {
 			<div className="App-header">
 			    <h2>Exploding <strong>dots</strong>
 			    	<span>
-			    		<button className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
-			    		<button><i className="fa fa-play"></i></button>
-			    		<button className="explode"><i className="fa fa-magic"></i></button>
+			    		<button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
+			    		<button onClick={this.stabilize}><i className="fa fa-play"></i></button>
+			    		<button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
 			    	</span>
 			    </h2>
 			</div>

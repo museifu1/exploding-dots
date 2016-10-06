@@ -75,7 +75,13 @@ body
 	font-weight: 700;
 	line-height: normal;
 	margin-left: 20px;
+	outline: none;
 	padding: 10px 20px;
+
+	transition: transform 0.2s;
+}
+.App-header h2 button:hover{
+	transform: scale(1.08,1.08);
 }
 .App-header h2 .explode{
 	background: #e28c1a;
@@ -276,10 +282,12 @@ body {
 	color: #34d293;
 }
 .configPanelWrapper {
+	display: none;
 	padding: 10px 0;
 }
 .dotsContainers {
 	// display: none;
+	margin-top: -38px;
 }
 .dotsContainers .title,
 .dotsContainers button,

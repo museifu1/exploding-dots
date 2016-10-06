@@ -22,7 +22,7 @@ class DotsStore extends EventEmitter {
       dots : [ [], [], [], [], [] ],
       nbContainers : 5,
       containerWidth : 300,
-      containerHeight : 450, 
+      containerHeight : 400, 
       dotsRayon : 25
     };
 
@@ -186,7 +186,7 @@ class DotsStore extends EventEmitter {
   }
 
   getBottomLimit(){
-    return this.state.containerHeight - (this.state.dotsRayon + 170);
+    return this.state.containerHeight - (this.state.dotsRayon + 10);
   }
 
   /*getContainerWidth(){
