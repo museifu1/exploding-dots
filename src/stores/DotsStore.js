@@ -34,17 +34,17 @@ class DotsStore extends EventEmitter {
       switch(action.actionType){
 
         case DOTS.BASE_CHANGED:
-
-          _this.state.base = action.base;          
+          _this.changeBase();
           break;
-        case DOTS.DOTS_CHANGED:
 
+        case DOTS.DOTS_CHANGED:
           if(action.hasOwnProperty("newdot")){
              _this.state.dots[action.index].push(action.newdot);
           }else{
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
+
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
           break;
@@ -58,6 +58,16 @@ class DotsStore extends EventEmitter {
 
     });
 
+  }
+
+  changeBase(){
+  	let bases = [2, 10, 16];
+    let next = false;
+    for (let base of bases) {
+      if(this.state.base < base && !next) next = base;
+    }
+    if(next == false) next = bases[0];
+    this.state.base = next;
   }
 
   stablize(){

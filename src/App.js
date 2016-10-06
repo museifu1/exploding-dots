@@ -307,36 +307,41 @@ class ConfigPanel extends Component{
     super();
 
     this.state = {base : 2 };
+    console.log(this);
   }
 
-
-
-  _select(event){
-    DotsActions.changeBase(Number.parseInt(event.target.value));
+  changeBase(event){
+    DotsActions.changeBase();
   }
-
 
   stabilize(event){
     DotsActions.stabilize();
   }
 
-
   oneStepStabilize(event){
     DotsActions.oneStepStabilize();
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange(){
+    this.setState({base : _DotsStore.getBase()});
+  }
 
   render() {
     return (
-      <div className="configPanel" onChange={this._select} value={this.state.base}>
-        <select onChange={this._select} >
-          <option value="2">Base 2</option>
-          <option value="10">Base 10</option>
-          <option value="16">Base 16</option>
-        </select>
-
-        <input type="button" value="Stabiliser le système" onClick={this.stabilize} />
-        <input type="button" value="Stabiliser une étape" onClick={this.oneStepStabilize} />
+      <div className="configPanel">
+        <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
+        <button onClick={this.stabilize}><i className="fa fa-play"></i></button>
+        <button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
       </div>
     );
   }
@@ -348,77 +353,37 @@ class ConfigPanel extends Component{
 class App extends Component {
 
   constructor(options){
+    super(options); 
 
-      super(options); 
-
-      //this.store = new DotsStore(AppDispatcher, options.state);
-      this.state = {base : 2 };
-      this.changeBase = this.changeBase.bind(this);
+    //this.store = new DotsStore(AppDispatcher, options.state);
   }
-
-  changeBase(event){
-	let bases = [2, 10, 16];
-	let next = false;
-	for (let base of bases) {
-	    if(this.state.base < base && !next) next = base;
-	}
-	if(next == false) next = bases[0];
-	DotsActions.changeBase(next);
-	this.setState({ base : next });
-  }
-
-
-  stabilize(event){
-    DotsActions.stabilize();
-  }
-
-  oneStepStabilize(event){
-    DotsActions.oneStepStabilize();
-  }
-
 
   render() {
     return (
-    <div className="scolab">
-		<div className="App">
-			<div className="App-header">
-			    <h2>Exploding <strong>dots</strong>
-			    	<span>
-			    		<button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
-			    		<button onClick={this.stabilize}><i className="fa fa-play"></i></button>
-			    		<button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
-			    	</span>
-			    </h2>
-			</div>
-			<div className="App-intro">
+      <div className="scolab">
+        <div className="App">
+          <div className="App-header">
+            <h2>Exploding <strong>dots</strong></h2>
+            <ConfigPanel />
+          </div>
 
-			  <div className="machine">
-			  	0 <i className="fa fa-arrows-h"></i> <span>?</span>
-			  </div>
+          <div className="App-intro">
+            <div className="dotsContainers">
+              <DotsContainer index="4" />
+              <DotsContainer index="3" />
+              <DotsContainer index="2" />
+              <DotsContainer index="1" />
+              <DotsContainer index="0" />
+            </div>
 
-			  <div className="configPanelWrapper">
-			    <ConfigPanel />
-			  </div>
-
-			  <div className="dotsContainers">
-			    <DotsContainer index="4" />
-			    <DotsContainer index="3" />
-			    <DotsContainer index="2" />
-			    <DotsContainer index="1" />
-			    <DotsContainer index="0" />
-			  </div>
-
-			  <div className="dotsFullSizeContainers">
-			    <SVGFullSizeContainer className="SVGFullSizeContainer" />
-
-			  </div>
-
-
-			</div>
-		</div>
-		<div className="credits">
-			<a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
-		</div>
+            <div className="dotsFullSizeContainers">
+              <SVGFullSizeContainer className="SVGFullSizeContainer" />
+            </div>
+          </div>
+        </div>
+        <div className="credits">
+          <a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
+        </div>
       </div>
     );
   }

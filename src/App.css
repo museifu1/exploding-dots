@@ -43,6 +43,7 @@ body
   padding: 10px;
   color: #555;
   margin-bottom: 20px;**/
+  position: relative;
   text-align: left;
 }
 
@@ -52,19 +53,21 @@ body
   margin-bottom: 8px;
   margin: 0 1%;
   padding: 0 40px;
-  position: relative;
   text-transform: uppercase;
   width: 98%;
 }
 .App-header h2 strong{
 	font-weight: 700;
 }
-.App-header h2 span{
+
+.configPanel{
+	font-size: 2em;
+	margin-right: 1%;
 	position: absolute;
 	right: 40px;
-	top: -4px;
+	top: 15px;
 }
-.App-header h2 button{
+.configPanel button{
 	background: #34d293;
 	border: none;
 	border-radius: 5px;
@@ -81,20 +84,16 @@ body
 
 	transition: transform 0.2s;
 }
-.App-header h2 button:hover{
+.configPanel button:hover{
 	transform: scale(1.08,1.08);
 }
-.App-header h2 .explode{
+.configPanel .explode{
 	background: #e28c1a;
 }
-.App-header h2 .base{
+.configPanel .base{
 	background: #69bfff;
 }
-.App-header h2:after,
-.App-header h2:before{
-  display: block;
-  position: absolute;
-}
+
 .App-intro {
   background: #fff;
   font-size: 1em;
@@ -282,10 +281,6 @@ body {
 .machine span{
 	color: #34d293;
 }
-.configPanelWrapper {
-	display: none;
-	padding: 10px 0;
-}
 .dotsContainers {
 	// display: none;
 	margin-top: -38px;
@@ -335,37 +330,94 @@ body {
 		margin: 45px 20px;
 	}
 	.App{
-		font-size: 0.5em;
+		// font-size: 0.5em;
+	}
+	.App-header h2{
+		// padding: 5px 10px;
+	}
+	.App-header h2 span{
+		// right: 10px;
+		// top: 3px;
+	}
+	.App-header h2 button{
+		// margin-left: 8px;
+		// padding: 7px 15px;
+	}
+	.dotsContainers{
+		// margin-top: -8px;
+	}
+}
+@media (max-width: 720px) {
+	.App{
+		font-size: 0.9em;
+	}
+	.configPanel{
+		font-size: 1.8em;
+		top: 15px;
+	}
+	.configPanel button{
+		padding: 7px 12px;
+	}
+}
+@media (max-width: 600px) {
+	.App{
+		font-size: 0.7em;
+	}
+	.App-header h2{
+		padding-left: 10px;
 	}
 	.App-intro{
 		padding: 10px;
 	}
-	.App-header h2{
-		padding: 5px 10px;
-	}
-	.App-header h2 span{
+	.configPanel{
 		right: 10px;
-		top: 3px;
-	}
-	.App-header h2 button{
-		margin-left: 8px;
-		padding: 7px 15px;
+		top: 10px;
 	}
 	.dotsContainers{
 		margin-top: -8px;
 	}
 }
-@media (max-width: 375px) {
+@media (max-width: 460px) {
+	.App-header{
+		height: 60px;
+		line-height: 60px;
+	}
+	.App-header h2{
+		line-height: 60px;
+	}
 	.scolab{
 		font-size: 0.8em;
 	}
 	.credits img{
 		width: 50px;
 	}
+	.configPanel{
+		top: -4px;
+	}
+	.configPanel button{
+		font-size: 0.85em;
+		height: 40px;
+		line-height: 40px;
+		margin-left: 10px;
+		min-width: 40px;
+		padding: 0 10px;
+		text-align: center;
+	}
+}
+@media (max-width: 400px) {
+	.App-header h2{
+		line-height: normal;
+		padding-top: 10px;
+	}
+	.App-header h2 strong{
+		display: block;
+	}
 }
 @media (max-width: 340px) {
-	.App-header h2 button{
-		font-size: 0.9em;
-		padding: 3px 8px;
+	.App{
+		font-size: 0.5em;
+	}
+	.configPanel button{
+		font-size: 1.2em;
 	}
 }
