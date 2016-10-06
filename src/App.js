@@ -80,9 +80,6 @@ class DotsContainer extends Component{
 
   render() {
 
-    //var baseIsOver = (this.state.value > (this.state.base-1));
-
-
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -147,7 +144,7 @@ class SVGContainer extends React.Component {
       this.dots.splice( positive, this.dots.length - positive );
     } else if( this.dots.length < positive ) {
       for( var i = this.dots.length; i < positive; i++) {
-        this.dots.push(<SVGDot key={i} x={statedots[i].x} y={statedots[i].y} positive={true}/>)
+        this.dots.push(<SVGDot key={i} x={statedots[i].x} y={statedots[i].y} positive={true} zoneIndex={this.props.index} />)
       }
     }
 
@@ -157,16 +154,16 @@ class SVGContainer extends React.Component {
 
     return (
 
-      <g transform={position} className={style}>
+      <g transform={position} className={style} className="dropZone">
         <rect ref="zone" className="dotBox" />
         
         <rect className="dotBoxTitle" />
         <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(10,this.props.index)}</text>
 
-        <ReactCSSTransitionGroup transitionName="svgDot" component="g" 
-            transitionEnterTimeout={300} transitionLeaveTimeout={500} >
+        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className="dotGroup" 
+        	transitionEnterTimeout={300} transitionLeaveTimeout={500}>
           {this.dots}
-        </ReactCSSTransitionGroup >
+        </ReactCSSTransitionGroup>
       </g>
         
     );
@@ -189,6 +186,7 @@ class SVGFullSizeContainer extends React.Component {
   // Add change listeners to stores
   componentDidMount() {
     _DotsStore.addChangeListener(this._onChange.bind(this));
+    d3.select("#stage circle").style("display","none");
   }
 
   // Remove change listeners from stores
@@ -199,8 +197,6 @@ class SVGFullSizeContainer extends React.Component {
   _onChange(){
     this.setState(getDotsState());
   }
-
-
   
   render() {
 
@@ -216,7 +212,9 @@ class SVGFullSizeContainer extends React.Component {
               <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
               <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
             </g>
-            <g id="stage"></g>
+            <g id="stage">
+              <SVGDot key={0} x={0} y={0} positive={true} zoneIndex={0} className="draggedDot" />
+            </g>
           </svg>
 
         </div>
@@ -232,7 +230,10 @@ class SVGDot extends React.Component {
   constructor(props){
     super();
 
-    this.state = {selected:false};
+    this.state = {
+      zoneIndex : props.zoneIndex,
+      selected:false
+    };
   }
 
   componentDidMount() {
@@ -252,12 +253,11 @@ class SVGDot extends React.Component {
 
 
   dragstarted(event){
-    
-    console.log("dragstarted");
 
-    var stage = d3.select("#stage");
-    var stageNode = stage.node();
-    stageNode.appendChild(d3.select(this.refs.dot).node());
+    //var stageNode = d3.select("#stage").node();
+    //stageNode.appendChild(d3.select(this.refs.dot).node());
+
+    d3.select("#stage circle").style("display","block");
 
     this.setState({
       selected: true
@@ -266,22 +266,40 @@ class SVGDot extends React.Component {
 
   dragended(event){
 
-    console.log("dragended")
+    d3.select("#stage circle").style("display","none");
 
-    this.setState({
-      selected: false
+
+    //find new zone for dots
+    var dropzones = d3.selectAll(".dropZone");
+    var currentZoneIndex = -1;
+    var currentZone;
+    dropzones._groups[0].forEach(function(zone, index){
+      var posInZone = d3.mouse(zone);
+      if(posInZone[0] > 0){
+        currentZoneIndex = dropzones._groups[0].length - index - 1;
+        currentZone = zone;
+      }      
     });
+
+    
+    var newNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex)-1;
+    DotsActions.dotsChanged(this.state.zoneIndex, newNbOfDots);
+
+    var newNbOfDots = _DotsStore.getDotsValueByIndex(currentZoneIndex)+1;
+    var pos = d3.mouse(currentZone);
+    DotsActions.dotsChanged(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
   }
 
   dragged(event){
-    console.log("dragged");
 
-    //var stage = d3.select("#stage").attr("transform");
-    //var translate = d3.transform(stage).translate;  //returns [0,-25]
+    var m = d3.mouse(stage);
+    d3.select("#stage circle")
+      .attr("cx", m[0])
+      .attr("cy", m[1]);
 
-    d3.select(this.refs.dot)
-      .attr("cx", d3.event.x)
-      .attr("cy", d3.event.y);
+      /*d3.select(this.refs.dot)
+        .attr('cx', d3.event.x)
+        .attr('cy', d3.event.y);*/
   }
 
 
@@ -309,6 +327,8 @@ class ConfigPanel extends Component{
     this.state = {base : 2 };
     console.log(this);
   }
+
+
 
   changeBase(event){
     DotsActions.changeBase();
@@ -369,12 +389,12 @@ class App extends Component {
 
           <div className="App-intro">
             <div className="dotsContainers">
-              <DotsContainer index="4" />
-              <DotsContainer index="3" />
-              <DotsContainer index="2" />
-              <DotsContainer index="1" />
-              <DotsContainer index="0" />
-            </div>
+	            <DotsContainer index="4" />
+	            <DotsContainer index="3" />
+	            <DotsContainer index="2" />
+	            <DotsContainer index="1" />
+	            <DotsContainer index="0" />
+	          </div>
 
             <div className="dotsFullSizeContainers">
               <SVGFullSizeContainer className="SVGFullSizeContainer" />
