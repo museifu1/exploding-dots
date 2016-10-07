@@ -1,11 +1,36 @@
 body
 {
-  background-color: #7BBBDD;
+  background-color: #267be5;
+  font: 1em/1.45em 'Lato', sans-serif;
+}
+
+.scolab{
+	margin: 45px auto;
+	max-width: 900px;
+  	text-align: center;
 }
 
 .App {
-  text-align: center;  
+	box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.2);
+	font-size: 1em;
 }
+
+.credits{
+	opacity: 0.5;
+	padding: 15px 5px;
+	text-align: right;
+}
+.credits a{
+	color: #000;
+	text-decoration: none;	
+}
+
+/* &harr; */
+
+/*:local .new{
+	composes: App;
+	border: 1px red solid;
+}*/
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -14,14 +39,65 @@ body
 
 .App-header {
   background-color: #f0f0f0;
-  height: 65px;
+  /**height: 65px;
   padding: 10px;
   color: #555;
-  margin-bottom: 20px;
+  margin-bottom: 20px;**/
+  position: relative;
+  text-align: left;
+}
+
+.App-header h2{
+  box-sizing: border-box;
+  font: 400 2em/2.5em 'Montserrat', sans-serif;
+  margin-bottom: 8px;
+  margin: 0 1%;
+  padding: 0 40px;
+  text-transform: uppercase;
+  width: 98%;
+}
+.App-header h2 strong{
+	font-weight: 700;
+}
+
+.configPanel{
+	font-size: 2em;
+	margin-right: 1%;
+	position: absolute;
+	right: 40px;
+	top: 15px;
+}
+.configPanel button{
+	background: #34d293;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.2);
+	// color: rgba(0,0,0,0.75);
+	color: #FFF;
+	cursor: pointer;
+	font: 400 0.75em/1em 'Montserrat', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+	margin-left: 20px;
+	outline: none;
+	padding: 10px 20px;
+
+	transition: transform 0.2s;
+}
+.configPanel button:hover{
+	transform: scale(1.08,1.08);
+}
+.configPanel .explode{
+	background: #e28c1a;
+}
+.configPanel .base{
+	background: #69bfff;
 }
 
 .App-intro {
-  font-size: large;
+  background: #fff;
+  font-size: 1em;
+  padding: 30px 40px 40px;
   text-align: center;
 }
 
@@ -39,11 +115,10 @@ body
 
 .dotsContainer
 {
-  width: 200px;
+  width: 18%;
   display: inline-block;
-  margin: 10px;
+  margin: 1%;
   background-color: #fff;
-  box-shadow: 5px 5px 0px 0px #689FBC;
 }
 
 .SVGContainer .title, 
@@ -62,7 +137,7 @@ body
     width: 100%;
     float: left;
     margin: 10px 0px 5px;
-    font-size: 40px;
+    font-size: 1em;
     color: #555;
 }
 
@@ -162,8 +237,8 @@ g.shaking circle
 
 .SVGContainer {
   margin: 0 auto;
-  background-color: #fff;
-  box-shadow: 5px 5px 0px 0px #689FBC;
+  // background-color: #fff;
+  // box-shadow: 5px 5px 0px 0px #689FBC;
 }
 
 
@@ -174,13 +249,14 @@ body {
   -webkit-tap-highlight-color:transparent
 }
 
-.dotsFullSizeContainers
+/** .dotsFullSizeContainers
 {
   text-align: center;
 }
 
 
 .dotsFullSizeContainers .SVGContainer {
+  background: red;
   display: inline-block;
 }
 
@@ -189,5 +265,159 @@ body {
 {
   width: 800px;
   height: 450px;
+}
+.dotsFullSizeContainers .SVGContainer svg > g{
   margin: 20px;
+} **/
+
+.machine{
+	color: #38a2ff;
+	display: none;
+	font: 700 4em/1.5em 'Montserrat', sans-serif;
+}
+.machine .fa{
+	color: #277ce6;
+}
+.machine span{
+	color: #34d293;
+}
+.dotsContainers {
+	// display: none;
+	margin-top: -38px;
+}
+.dotsContainers .title,
+.dotsContainers button,
+.dotsContainers .nbDots{
+	display: none;
+}
+.baseNumber{
+	// border: 1px solid #000;
+	color: #CCC;
+	display: block;
+	font: 700 4em/1.5em 'Montserrat', sans-serif;
+}
+.dotBox{
+	fill: #FFF;
+	height: 98%;
+	stroke: #CCC;
+	stroke-width: 5;
+	width: 18%;
+	x: 1%;
+	y: 1%;
+}
+.dotBoxTitle{
+	fill: #CCC;
+	height: 60px;
+	width: 18%;
+	x: 1%;
+	y: 1%;
+}
+.dotBoxTitleText{
+	// display: none;
+	// fill: red;
+	font-size: 35px;
+	// height: 60px;
+	// width: 18%;
+	// x: 150;
+	// y: 40;
+}
+.dotCircle{
+	fill: #34d293;
+} 
+
+@media (max-width: 940px) {
+	.scolab{
+		margin: 45px 20px;
+	}
+	.App{
+		// font-size: 0.5em;
+	}
+	.App-header h2{
+		// padding: 5px 10px;
+	}
+	.App-header h2 span{
+		// right: 10px;
+		// top: 3px;
+	}
+	.App-header h2 button{
+		// margin-left: 8px;
+		// padding: 7px 15px;
+	}
+	.dotsContainers{
+		// margin-top: -8px;
+	}
+}
+@media (max-width: 720px) {
+	.App{
+		font-size: 0.9em;
+	}
+	.configPanel{
+		font-size: 1.8em;
+		top: 15px;
+	}
+	.configPanel button{
+		padding: 7px 12px;
+	}
+}
+@media (max-width: 600px) {
+	.App{
+		font-size: 0.7em;
+	}
+	.App-header h2{
+		padding-left: 10px;
+	}
+	.App-intro{
+		padding: 10px;
+	}
+	.configPanel{
+		right: 10px;
+		top: 10px;
+	}
+	.dotsContainers{
+		margin-top: -8px;
+	}
+}
+@media (max-width: 460px) {
+	.App-header{
+		height: 60px;
+		line-height: 60px;
+	}
+	.App-header h2{
+		line-height: 60px;
+	}
+	.scolab{
+		font-size: 0.8em;
+	}
+	.credits img{
+		width: 50px;
+	}
+	.configPanel{
+		top: -4px;
+	}
+	.configPanel button{
+		font-size: 0.85em;
+		height: 40px;
+		line-height: 40px;
+		margin-left: 10px;
+		min-width: 40px;
+		padding: 0 10px;
+		text-align: center;
+	}
+}
+@media (max-width: 400px) {
+	.App-header h2{
+		line-height: normal;
+		padding-top: 10px;
+	}
+	.App-header h2 strong{
+		display: block;
+	}
+}
+@media (max-width: 340px) {
+	.App{
+		font-size: 0.5em;
+	}
+	.configPanel button{
+		font-size: 1.2em;
+	}
 }

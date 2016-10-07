@@ -1,5 +1,8 @@
+
+import styles from './App.css';
+import './font-awesome.min.css';
+import logo from './scolab.png';
 import React, { Component } from 'react';
-import './App.css';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
 import AppDispatcher from './dispatchers/AppDispatcher';
@@ -97,7 +100,7 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 450,
+      height : 400,
       base : 2
     }
 
@@ -145,22 +148,21 @@ class SVGContainer extends React.Component {
 
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
-    var style = (this.state.base <= this.dots.length) ? "shaking" : "";
+    var style = (this.state.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
     var position = `translate(${reverseIndex*(this.state.width+20)},0)`;
 
     return (
 
       <g transform={position} className={style} className="dropZone">
-        <rect x="0" y="10" width={this.state.width} height={this.state.height+60} fill="#e1e1e1" />
-        <rect ref="zone" x="-10" y="60" width={this.state.width} height={this.state.height} fill="#7BBBDD" />
-        <rect x="-10" y="0" width={this.state.width} height="60" fill="#f1f1f1" />
-        <text x={this.state.width/2} y="40" textAnchor="middle" className="title">{Math.pow(10,this.props.index)}</text>
+        <rect ref="zone" className="dotBox" />
+        
+        <rect className="dotBoxTitle" />
+        <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(10,this.props.index)}</text>
 
-
-        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className="dotGroup"
-            transitionEnterTimeout={300} transitionLeaveTimeout={500} >
+        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style} 
+        	transitionEnterTimeout={300} transitionLeaveTimeout={500}>
           {this.dots}
-        </ReactCSSTransitionGroup >
+        </ReactCSSTransitionGroup>
       </g>
         
     );
@@ -199,12 +201,9 @@ class SVGFullSizeContainer extends React.Component {
 
     return (
       <div className="SVGContainer">
-        <div className="title">Exploding Dots!</div>
-
-
         <div className="scrollContainer">
 
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 900">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 400">
             <g>
               <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
               <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
@@ -305,12 +304,12 @@ class SVGDot extends React.Component {
 
   render(){
 
-    var color = (this.state.selected) ? "#eddc4c" : "#E6CD00";
+    var style = (this.state.selected) ? "dotCircle dotCircleSelected" : "dotCircle";
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
-    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} fill={color} stroke={2} />)
+    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />)
   }
 }
 
@@ -324,37 +323,43 @@ class ConfigPanel extends Component{
     super();
 
     this.state = {base : 2 };
+    console.log(this);
   }
 
 
 
-  _select(event){
-    DotsActions.changeBase(Number.parseInt(event.target.value));
-
+  changeBase(event){
+    DotsActions.changeBase();
   }
-
 
   stabilize(event){
     DotsActions.stabilize();
   }
 
-
   oneStepStabilize(event){
     DotsActions.oneStepStabilize();
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange(){
+    this.setState({base : _DotsStore.getBase()});
+  }
 
   render() {
     return (
-      <div className="configPanel" onChange={this._select} value={this.state.base}>
-        <select onChange={this._select} >
-          <option value="2">Base 2</option>
-          <option value="10">Base 10</option>
-          <option value="16">Base 16</option>
-        </select>
-
-        <input type="button" value="Stabiliser le système" onClick={this.stabilize} />
-        <input type="button" value="Stabiliser une étape" onClick={this.oneStepStabilize} />
+      <div className="configPanel">
+        <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
+        <button onClick={this.stabilize}><i className="fa fa-play"></i></button>
+        <button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
       </div>
     );
   }
@@ -365,41 +370,37 @@ class ConfigPanel extends Component{
 
 class App extends Component {
 
-  /*constructor(options){
+  constructor(options){
+    super(options); 
 
-      super(options); 
-
-      //this.store = new DotsStore(AppDispatcher, options.state);
-
-  }*/
-
+    //this.store = new DotsStore(AppDispatcher, options.state);
+  }
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Exploding dots!</h2>
-        </div>
-        <div className="App-intro">
-
-          <div className="configPanelWrapper">
+      <div className="scolab">
+        <div className="App">
+          <div className="App-header">
+            <h2>Exploding <strong>dots</strong></h2>
             <ConfigPanel />
           </div>
 
-          <div className="dotsContainers">
-            <DotsContainer index="4" />
-            <DotsContainer index="3" />
-            <DotsContainer index="2" />
-            <DotsContainer index="1" />
-            <DotsContainer index="0" />
+          <div className="App-intro">
+            <div className="dotsContainers">
+	            <DotsContainer index="4" />
+	            <DotsContainer index="3" />
+	            <DotsContainer index="2" />
+	            <DotsContainer index="1" />
+	            <DotsContainer index="0" />
+	          </div>
+
+            <div className="dotsFullSizeContainers">
+              <SVGFullSizeContainer className="SVGFullSizeContainer" />
+            </div>
           </div>
-
-          <div className="dotsFullSizeContainers">
-            <SVGFullSizeContainer className="SVGFullSizeContainer" />
-
-          </div>
-
-
+        </div>
+        <div className="credits">
+          <a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
         </div>
       </div>
     );

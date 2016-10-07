@@ -22,7 +22,7 @@ class DotsStore extends EventEmitter {
       dots : [ [], [], [], [], [] ],
       nbContainers : 5,
       containerWidth : 300,
-      containerHeight : 450, 
+      containerHeight : 400, 
       dotsRayon : 25
     };
 
@@ -35,11 +35,10 @@ class DotsStore extends EventEmitter {
 
         case DOTS.BASE_CHANGED:
 
-          _this.state.base = action.base;          
+          _this.changeBase();
           break;
 
         case DOTS.DOTS_CHANGED:
-
           if(action.hasOwnProperty("newdot")){
              _this.state.dots[action.index].push(action.newdot);
           }else{
@@ -62,6 +61,16 @@ class DotsStore extends EventEmitter {
 
     });
 
+  }
+
+  changeBase(){
+  	let bases = [2, 10, 16];
+    let next = false;
+    for (let base of bases) {
+      if(this.state.base < base && !next) next = base;
+    }
+    if(next == false) next = bases[0];
+    this.state.base = next;
   }
 
   stablize(){
@@ -187,19 +196,19 @@ class DotsStore extends EventEmitter {
   }
 
   getLeftLimit(){
-    return this.state.containerWidth-this.state.dotsRayon - 10;
+    return this.state.containerWidth - (this.state.dotsRayon + 10);
   }
 
   getRightLimit(){
-    return this.state.dotsRayon-10;
+    return this.state.dotsRayon + 30;
   }
 
   getTopLimit(){
-    return this.state.dotsRayon+60;
+    return this.state.dotsRayon + 70;
   }
 
   getBottomLimit(){
-    return this.state.containerHeight - this.state.dotsRayon + 60;
+    return this.state.containerHeight - (this.state.dotsRayon + 10);
   }
 
   /*getContainerWidth(){
