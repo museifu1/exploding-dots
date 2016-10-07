@@ -160,7 +160,7 @@ class SVGContainer extends React.Component {
         <rect className="dotBoxTitle" />
         <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(10,this.props.index)}</text>
 
-        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className="dotGroup" 
+        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style} 
         	transitionEnterTimeout={300} transitionLeaveTimeout={500}>
           {this.dots}
         </ReactCSSTransitionGroup>
