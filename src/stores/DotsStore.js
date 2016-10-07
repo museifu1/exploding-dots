@@ -34,6 +34,7 @@ class DotsStore extends EventEmitter {
       switch(action.actionType){
 
         case DOTS.BASE_CHANGED:
+
           _this.changeBase();
           break;
 
@@ -44,7 +45,9 @@ class DotsStore extends EventEmitter {
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
-
+        case DOTS.DOT_REMOVED:
+          _this.removeDot(action.zoneIndex, action.dotIndex);
+          break;
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
           break;
@@ -117,6 +120,15 @@ class DotsStore extends EventEmitter {
     });
 
 
+  }
+
+
+  removeDot(zoneIndex, dotIndex = -1){
+    var removed = this.state.dots[zoneIndex].splice(dotIndex, 1);
+  }
+
+  addDot(){
+    //TO BE IMPLEMENTED
   }
 
 
