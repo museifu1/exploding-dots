@@ -283,13 +283,31 @@ class SVGDot extends React.Component {
       }      
     });
 
-    
+    var diffZone = this.state.zoneIndex - currentZoneIndex;
+    console.log("diffZone", diffZone);
+    //console.log("Math.pow("+_DotsStore.getBase()+", "+diffZone+");", Math.pow(_DotsStore.getBase(), diffZone);)
 
-    DotsActions.dotRemoved(this.state.zoneIndex, this.props.index);
+    var dotsToRemove = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - 1;
+    if(diffZone < 0){
+      dotsToRemove = _DotsStore.getDotsValueByIndex(this.state.zoneIndex)-Math.pow(_DotsStore.getBase(), diffZone*-1);
+    }
 
-    var newNbOfDots = _DotsStore.getDotsValueByIndex(currentZoneIndex)+1;
+
+    if(dotsToRemove < 0){
+      alert("Impossible");
+      //event.preventDefault();
+      return false;
+    }
+
+    //DotsActions.dotRemoved(this.state.zoneIndex, this.props.index);
+    DotsActions.dotsChanged(this.state.zoneIndex, dotsToRemove);
+
+   
+    var newNbOfDots = _DotsStore.getDotsValueByIndex(currentZoneIndex)+Math.pow(_DotsStore.getBase(), diffZone);
+    console.log("newNbOfDots", newNbOfDots);
     var pos = d3.mouse(currentZone);
-    DotsActions.dotsChanged(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
+    //DotsActions.dotsChanged(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
+    DotsActions.dotsChanged(currentZoneIndex, newNbOfDots);
   }
 
   dragged(event){
