@@ -157,7 +157,7 @@ class SVGContainer extends React.Component {
         <rect ref="zone" className="dotBox" />
         
         <rect className="dotBoxTitle" />
-        <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(10,this.props.index)}</text>
+        <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(this.state.base,this.props.index)}</text>
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style} 
         	transitionEnterTimeout={300} transitionLeaveTimeout={500}>
@@ -256,9 +256,6 @@ class SVGDot extends React.Component {
 
   dragstarted(event){
 
-    //var stageNode = d3.select("#stage").node();
-    //stageNode.appendChild(d3.select(this.refs.dot).node());
-
     d3.select("#stage circle").style("display","block");
 
     this.setState({
@@ -283,30 +280,23 @@ class SVGDot extends React.Component {
       }      
     });
 
-
-
     var diffZone = this.state.zoneIndex - currentZoneIndex;
-    var dotsToRemove = 1; // _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - 1;
+    var dotsToRemove = 1;
     if(diffZone < 0){
-      dotsToRemove = /*_DotsStore.getDotsValueByIndex(this.state.zoneIndex)-*/Math.pow(_DotsStore.getBase(), diffZone*-1);
+      dotsToRemove = Math.pow(_DotsStore.getBase(), diffZone*-1);
     }
 
+    //Remove the dots
     var finalNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - dotsToRemove;
     if(finalNbOfDots < 0){
       alert("Pas assez de points disponible pour cette opération");
       return false;
     }
-    console.log("dotsToRemove", dotsToRemove);
-
     DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index);
-    //DotsActions.dotsChanged(this.state.zoneIndex, dotsToRemove);
 
-   
-    var newNbOfDots = /*_DotsStore.getDotsValueByIndex(currentZoneIndex)+*/Math.pow(_DotsStore.getBase(), diffZone);
-    console.log("newNbOfDots", newNbOfDots);
+    //Add the new dots
+    var newNbOfDots = Math.pow(_DotsStore.getBase(), diffZone);
     var pos = d3.mouse(currentZone);
-    //DotsActions.dotsChanged(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
-    //DotsActions.dotsChanged(currentZoneIndex, newNbOfDots);
     DotsActions.addDots(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
 
 
@@ -341,9 +331,7 @@ class ConfigPanel extends Component{
 
   constructor(props){
     super();
-
     this.state = {base : 2 };
-    console.log(this);
   }
 
 
