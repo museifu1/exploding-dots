@@ -46,7 +46,11 @@ class DotsStore extends EventEmitter {
           }
           break;
         case DOTS.DOT_REMOVED:
-          _this.removeDot(action.zoneIndex, action.dotIndex);
+          console.log(action);
+          _this.removeDots(action.zoneIndex, action.nbDots, action.dotIndex);
+          break;
+        case DOTS.DOT_ADDED:
+          _this.addDots(action.zoneIndex, action.nbDots, action.newdot);
           break;
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
@@ -123,12 +127,39 @@ class DotsStore extends EventEmitter {
   }
 
 
-  removeDot(zoneIndex, dotIndex = -1){
-    var removed = this.state.dots[zoneIndex].splice(dotIndex, 1);
+  removeDots(zoneIndex, nbDots = 1, dotIndex = -1){
+    
+    console.log("nbDots", nbDots);
+
+    if(nbDots > 0 && dotIndex != -1){
+      var removed = this.state.dots[zoneIndex].splice(dotIndex, 1);
+      nbDots--;
+    }
+
+    console.log("nbDots", nbDots);
+
+    if(nbDots > 0){
+      this.state.dots[zoneIndex] = this.updateDotsArray(this.state.dots[zoneIndex], this.state.dots[zoneIndex].length-nbDots);
+    }
+    
   }
 
-  addDot(){
+  addDots(zoneIndex, nbDots, newdot){
     //TO BE IMPLEMENTED
+
+    //console.log("nbDots", nbDots);
+
+    if(nbDots > 0 && newdot !== undefined){
+      this.state.dots[zoneIndex].push(newdot);
+      nbDots--;
+    }
+
+    //console.log("nbDots", nbDots);
+
+    if(nbDots > 0){
+      //Todo : make those dots spawn from newdot position
+      this.state.dots[zoneIndex] = this.updateDotsArray(this.state.dots[zoneIndex], this.state.dots[zoneIndex].length+nbDots);
+    }
   }
 
 

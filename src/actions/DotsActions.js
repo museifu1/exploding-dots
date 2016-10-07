@@ -12,10 +12,11 @@ export default class DotsActions {
     }
 
 
-    static dotAdded(_zoneIndex, _x, _y){
+    static addDots(_zoneIndex, _nbDots, _x, _y){
 
         var obj = {
             actionType : DOTS.DOT_ADDED,
+            nbDots : _nbDots,
             zoneIndex : _zoneIndex
         };
 
@@ -31,11 +32,12 @@ export default class DotsActions {
     }
 
 
-    static dotRemoved(_zoneIndex, _dotIndex = -1){
+    static removeDots(_zoneIndex, _nbDots = 1, _dotIndex = -1){
         
         AppDispatcher.dispatch({
             actionType : DOTS.DOT_REMOVED,
             zoneIndex : _zoneIndex,
+            nbDots : _nbDots,
             dotIndex : _dotIndex
         });
     }

@@ -48,7 +48,7 @@ class DotsContainer extends Component{
 
   minusOne(){
     if(this.state.value > 0){
-      DotsActions.dotRemoved(this.state.index);
+      DotsActions.removeDots(this.state.index);
     }
   }
 
@@ -283,31 +283,33 @@ class SVGDot extends React.Component {
       }      
     });
 
-    var diffZone = this.state.zoneIndex - currentZoneIndex;
-    console.log("diffZone", diffZone);
-    //console.log("Math.pow("+_DotsStore.getBase()+", "+diffZone+");", Math.pow(_DotsStore.getBase(), diffZone);)
 
-    var dotsToRemove = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - 1;
+
+    var diffZone = this.state.zoneIndex - currentZoneIndex;
+    var dotsToRemove = 1; // _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - 1;
     if(diffZone < 0){
-      dotsToRemove = _DotsStore.getDotsValueByIndex(this.state.zoneIndex)-Math.pow(_DotsStore.getBase(), diffZone*-1);
+      dotsToRemove = /*_DotsStore.getDotsValueByIndex(this.state.zoneIndex)-*/Math.pow(_DotsStore.getBase(), diffZone*-1);
     }
 
-
-    if(dotsToRemove < 0){
-      alert("Impossible");
-      //event.preventDefault();
+    var finalNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - dotsToRemove;
+    if(finalNbOfDots < 0){
+      alert("Pas assez de points disponible pour cette opération");
       return false;
     }
+    console.log("dotsToRemove", dotsToRemove);
 
-    //DotsActions.dotRemoved(this.state.zoneIndex, this.props.index);
-    DotsActions.dotsChanged(this.state.zoneIndex, dotsToRemove);
+    DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index);
+    //DotsActions.dotsChanged(this.state.zoneIndex, dotsToRemove);
 
    
-    var newNbOfDots = _DotsStore.getDotsValueByIndex(currentZoneIndex)+Math.pow(_DotsStore.getBase(), diffZone);
+    var newNbOfDots = /*_DotsStore.getDotsValueByIndex(currentZoneIndex)+*/Math.pow(_DotsStore.getBase(), diffZone);
     console.log("newNbOfDots", newNbOfDots);
     var pos = d3.mouse(currentZone);
     //DotsActions.dotsChanged(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
-    DotsActions.dotsChanged(currentZoneIndex, newNbOfDots);
+    //DotsActions.dotsChanged(currentZoneIndex, newNbOfDots);
+    DotsActions.addDots(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
+
+
   }
 
   dragged(event){
