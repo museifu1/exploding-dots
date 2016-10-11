@@ -290,7 +290,7 @@ class SVGDot extends React.Component {
     //Remove the dots
     var finalNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - dotsToRemove;
     if(finalNbOfDots < 0){
-      alert("Pas assez de points disponible pour cette opération");
+      alert("Pas assez de points disponibles pour cette opération");
       return false;
     }
     DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index, "no-animation");
