@@ -23,7 +23,9 @@ var getDotsStateByIndex = (index) => {
 var getDotsState = () => {
   return {
     base : _DotsStore.getBase(),
-    dots : _DotsStore.getDotsValue()
+    dots : _DotsStore.getDotsValue(),
+    dotsCount: _DotsStore.getDotsCount(),
+    dotsNum: _DotsStore.getDotsNum()
   }
 }
 
@@ -373,6 +375,51 @@ class ConfigPanel extends Component{
   }
 }
 
+class VisualPanel extends Component{
+
+
+  constructor(props){
+    super();
+    this.state = getDotsState();
+  }
+
+
+
+  // changeBase(event){
+  //   DotsActions.changeBase();
+  // }
+
+  // stabilize(event){
+  //   DotsActions.stabilize();
+  // }
+
+  // oneStepStabilize(event){
+  //   DotsActions.oneStepStabilize();
+  // }
+
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange(){
+    this.setState(getDotsState());
+  }
+
+  render() {
+    return (
+      <div className="visualPanel">
+      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span>{this.state.dotsNum}</span>
+      </div>
+    );
+  }
+}
+
 
 
 
@@ -394,6 +441,7 @@ class App extends Component {
           </div>
 
           <div className="App-intro">
+            <VisualPanel />
             <div className="dotsContainers">
 	            <DotsContainer index="4" />
 	            <DotsContainer index="3" />

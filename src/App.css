@@ -96,7 +96,7 @@ body
 
 .App-intro {
   background: #fff;
-  font-size: 1em;
+  font-size: 0.6em;
   padding: 30px 40px 40px;
   text-align: center;
 }
@@ -296,7 +296,7 @@ body {
 }
 .dotsContainers {
 	// display: none;
-	margin-top: -38px;
+	// margin-top: -38px;
 }
 .dotsContainers .title,
 .dotsContainers button,
@@ -336,7 +336,15 @@ body {
 }
 .dotCircle{
 	fill: #34d293;
-} 
+}
+
+.visualPanel{
+	color: #28a3ff;
+	font: 700 8em/1em 'Montserrat', sans-serif;
+}
+.visualPanel i{
+	color: #167ce6;
+}
 
 @media (max-width: 940px) {
 	.scolab{
@@ -387,7 +395,7 @@ body {
 		top: 10px;
 	}
 	.dotsContainers{
-		margin-top: -8px;
+		// margin-top: -8px;
 	}
 }
 @media (max-width: 460px) {

@@ -23,7 +23,9 @@ class DotsStore extends EventEmitter {
       nbContainers : 5,
       containerWidth : 300,
       containerHeight : 400, 
-      dotsRayon : 25
+      dotsRayon : 25,
+      dotsCount: 0,
+      dotsNum: "?"
     };
 
     var _this = this;
@@ -32,9 +34,7 @@ class DotsStore extends EventEmitter {
     dispatcher.register(function (action) {
 
       switch(action.actionType){
-
         case DOTS.BASE_CHANGED:
-
           _this.changeBase();
           break;
 
@@ -45,12 +45,15 @@ class DotsStore extends EventEmitter {
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
+
         case DOTS.DOT_REMOVED:
           _this.removeDots(action.zoneIndex, action.nbDots, action.dotIndex);
           break;
+
         case DOTS.DOT_ADDED:
           _this.addDots(action.zoneIndex, action.nbDots, action.newdot);
           break;
+
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
           break;
@@ -60,10 +63,33 @@ class DotsStore extends EventEmitter {
           break;
       }
 
+      _this.setDotsCount();
+      _this.setDotsNum();
       _this.emitChange();
 
     });
 
+  }
+
+  setDotsCount(){
+    let dotsCount = 0;
+    let col = 0;
+    for(let dot of this.state.dots){
+    	dotsCount += dot.length * Math.pow(this.state.base,col);
+    	col++;
+    }
+    this.state.dotsCount = dotsCount;
+  }
+
+  setDotsNum(){
+    let dotsNum = "";
+    let col = 0;
+    for(let dot of this.state.dots){
+    	dotsNum = String(dot.length)+dotsNum;
+    	col++;
+    }
+    this.state.dotsNum = parseInt(dotsNum);
+    if(String(parseInt(this.state.dotsNum))=="NaN") this.state.dotsNum = "?";
   }
 
   changeBase(){
@@ -121,10 +147,7 @@ class DotsStore extends EventEmitter {
         }
       }
     });
-
-
   }
-
 
   removeDots(zoneIndex, nbDots = 1, dotIndex = -1){
 
@@ -137,7 +160,7 @@ class DotsStore extends EventEmitter {
       //Todo : make those dots explode from dotIndex position
       this.state.dots[zoneIndex] = this.updateDotsArray(this.state.dots[zoneIndex], this.state.dots[zoneIndex].length-nbDots);
     }
-    
+    console.log(zoneIndex, nbDots, dotIndex);
   }
 
   addDots(zoneIndex, nbDots, newdot){
@@ -151,6 +174,8 @@ class DotsStore extends EventEmitter {
       //Todo : make those dots spawn from newdot position
       this.state.dots[zoneIndex] = this.updateDotsArray(this.state.dots[zoneIndex], this.state.dots[zoneIndex].length+nbDots);
     }
+
+    console.log(zoneIndex, nbDots, newdot);
   }
 
 
@@ -203,6 +228,14 @@ class DotsStore extends EventEmitter {
 
   getDotsValue(){
     return this.state.dots;
+  }
+
+  getDotsCount(){
+    return this.state.dotsCount;
+  }
+
+  getDotsNum(){
+    return this.state.dotsNum;
   }
 
   getDotsValueByIndex(index){
