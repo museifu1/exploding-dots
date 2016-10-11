@@ -265,6 +265,10 @@ class SVGDot extends React.Component {
 
   dragended(event){
 
+    this.setState({
+      selected: false
+    });
+
     d3.select("#stage circle").style("display","none");
 
 
