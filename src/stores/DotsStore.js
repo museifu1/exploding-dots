@@ -46,9 +46,10 @@ class DotsStore extends EventEmitter {
           }
           break;
         case DOTS.DOT_REMOVED:
-          _this.removeDots(action.zoneIndex, action.nbDots, action.dotIndex);
+          _this.removeDots(action.zoneIndex, action.nbDots, action.dotIndex, action.style);
           break;
         case DOTS.DOT_ADDED:
+          console.log("action.newdot)", action.newdot)
           _this.addDots(action.zoneIndex, action.nbDots, action.newdot);
           break;
         case DOTS.ONE_STEP_STABILIZE:
@@ -126,10 +127,15 @@ class DotsStore extends EventEmitter {
   }
 
 
-  removeDots(zoneIndex, nbDots = 1, dotIndex = -1){
+  removeDots(zoneIndex, nbDots = 1, dotIndex = -1, dotStyle = ""){
+
+    //this.state.dots[zoneIndex][0].style = dotStyle;
+    //console.log("this.state.dots[zoneIndex][0]", this.state.dots[zoneIndex][0]);
 
     if(nbDots > 0 && dotIndex != -1){
       var removed = this.state.dots[zoneIndex].splice(dotIndex, 1);
+      //removed[0].style = dotStyle;
+      //console.log("removed", removed);
       nbDots--;
     }
 

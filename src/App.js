@@ -143,7 +143,7 @@ class SVGContainer extends React.Component {
     this.dots = [];
     statedots.forEach(function(dot, index){
         var key = zoneIndex + "." + dot.x + "." + dot.y;
-        _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} positive={true} zoneIndex={zoneIndex} />);
+        _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
     });
 
 
@@ -274,7 +274,8 @@ class SVGDot extends React.Component {
     var currentZone;
     dropzones._groups[0].forEach(function(zone, index){
       var posInZone = d3.mouse(zone);
-      if(posInZone[0] > 0){
+      var boundingZone = zone.getBoundingClientRect();
+      if(posInZone[0] > 0 && posInZone[1] > 0 && posInZone[1] < boundingZone.bottom){
         currentZoneIndex = dropzones._groups[0].length - index - 1;
         currentZone = zone;
       }      
@@ -292,12 +293,12 @@ class SVGDot extends React.Component {
       alert("Pas assez de points disponible pour cette opération");
       return false;
     }
-    DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index);
+    DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index, "no-animation");
 
     //Add the new dots
     var newNbOfDots = Math.pow(_DotsStore.getBase(), diffZone);
     var pos = d3.mouse(currentZone);
-    DotsActions.addDots(currentZoneIndex, newNbOfDots, pos[0], pos[1]);
+    DotsActions.addDots(currentZoneIndex, newNbOfDots, pos[0], pos[1], "dotmove");
 
 
   }
@@ -314,7 +315,7 @@ class SVGDot extends React.Component {
 
   render(){
 
-    var style = (this.state.selected) ? "dotCircle dotCircleSelected" : "dotCircle";
+    var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle") + " " + this.props.style;
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
