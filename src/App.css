@@ -179,12 +179,21 @@ g.shaking circle
   }
 }
 
+circle.dotCircleSelected
+{
+  fill:#a5ffdb !important;
+}
 
 
 .svgDot-enter {
   transform-origin: center;
   animation: dotZoomAnimationIn 0.3s cubic-bezier(.36,.07,.19,.97) both !important;
 }
+
+.svgDot-enter.dotmove {
+
+}
+
 
 .svgDot-enter.svgDot-enter-active {
 
@@ -195,6 +204,10 @@ g.shaking circle
   animation:dotExplodeAnimation 0.5s cubic-bezier(.36,.07,.19,.97) both, dotFadeAnimation 0.5s !important;
   animation-iteration-count:1;
   transform-origin: center;
+}
+
+.svgDot-leave.no-animation{
+  animation:none !important;
 }
 
 .svgDot-leave.svgDot-leave-active {
