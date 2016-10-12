@@ -341,10 +341,12 @@ class ConfigPanel extends Component{
     this.state = {base : 2 };
   }
 
-
-
   changeBase(event){
     DotsActions.changeBase();
+  }
+
+  reset(event){
+  	DotsActions.clearDots();
   }
 
   stabilize(event){
@@ -373,8 +375,9 @@ class ConfigPanel extends Component{
     return (
       <div className="configPanel">
         <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
-        <button onClick={this.stabilize}><i className="fa fa-play"></i></button>
+        <button onClick={this.stabilize} className="play"><i className="fa fa-play"></i></button>
         <button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
+        <button onClick={this.reset} className="reset"><i className="fa fa-refresh"></i></button>
       </div>
     );
   }
@@ -441,7 +444,7 @@ class App extends Component {
       <div className="scolab">
         <div className="App">
           <div className="App-header">
-            <h2>Exploding <strong>dots</strong></h2>
+            <h2><strong>Boum</strong> Maths</h2>
             <ConfigPanel />
           </div>
 

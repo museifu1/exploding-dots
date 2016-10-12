@@ -68,7 +68,7 @@ body
 	top: 15px;
 }
 .configPanel button{
-	background: #34d293;
+	background: #999;
 	border: none;
 	border-radius: 5px;
 	box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.2);
@@ -82,16 +82,24 @@ body
 	outline: none;
 	padding: 10px 20px;
 
-	transition: transform 0.2s;
+	transition: transform 0.2s, background 0.2s;
 }
+.configPanel button:active,
 .configPanel button:hover{
+	background: #69bfff;
 	transform: scale(1.08,1.08);
 }
-.configPanel .explode{
+.configPanel .play:active,
+.configPanel .play:hover{
+	background: #34d293;
+}
+.configPanel .explode:active,
+.configPanel .explode:hover{
 	background: #e28c1a;
 }
-.configPanel .base{
-	background: #69bfff;
+.configPanel .base:active,
+.configPanel .base:hover{
+	// background: #69bfff;
 }
 
 .App-intro {
@@ -369,6 +377,11 @@ body {
 		// margin-top: -8px;
 	}
 }
+@media (max-width: 767px) {
+	.scolab{
+		margin: 0 0 45px;
+	}
+}
 @media (max-width: 720px) {
 	.App{
 		font-size: 0.9em;
@@ -393,7 +406,16 @@ body {
 	}
 	.configPanel{
 		right: 10px;
-		top: 10px;
+		top: 7px;
+	}
+	.configPanel button{
+		font-size: 0.85em;
+		height: 40px;
+		line-height: 40px;
+		margin-left: 10px;
+		min-width: 40px;
+		padding: 0 10px;
+		text-align: center;
 	}
 	.dotsContainers{
 		// margin-top: -8px;
@@ -415,15 +437,6 @@ body {
 	}
 	.configPanel{
 		top: -4px;
-	}
-	.configPanel button{
-		font-size: 0.85em;
-		height: 40px;
-		line-height: 40px;
-		margin-left: 10px;
-		min-width: 40px;
-		padding: 0 10px;
-		text-align: center;
 	}
 }
 @media (max-width: 400px) {

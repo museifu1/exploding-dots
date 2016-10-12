@@ -61,7 +61,11 @@ class DotsStore extends EventEmitter {
           break;
           
         case DOTS.STABILIZE:
-          _this.stablize();         
+          _this.stablize();    
+          break;
+
+        case DOTS.CLEAR:
+          _this.clearDots();         
           break;
       }
 
@@ -94,7 +98,7 @@ class DotsStore extends EventEmitter {
     	if(dot.length >= this.state.base && !this.state.unstable) this.state.unstable = true;
     }
     this.state.dotsNum = parseInt(dotsNum);
-    if(String(parseInt(this.state.dotsNum))=="NaN") this.state.dotsNum = "?";
+    if(String(parseInt(this.state.dotsNum))=="NaN" || parseInt(this.state.dotsNum) == 0) this.state.dotsNum = "?";
   }
 
   changeBase(){
@@ -105,6 +109,14 @@ class DotsStore extends EventEmitter {
     }
     if(next == false) next = bases[0];
     this.state.base = next;
+  }
+
+  clearDots(){
+  	this.state.dots = [ [], [], [], [], [] ];
+    this.state.dotsRayon = 25;
+    this.state.dotsCount = 0;
+    this.state.dotsNum = "?";
+    this.state.unstable = false;
   }
 
   stablize(){
