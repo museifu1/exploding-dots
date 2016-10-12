@@ -142,7 +142,8 @@ body
 }
 
 
-.dotsContainer .baseIsOver
+.dotsContainer .baseIsOver,
+.visualPanel .baseIsOver
 {
   color:#ff0000;
   animation: shake 2s cubic-bezier(.36,.07,.19,.97) both;

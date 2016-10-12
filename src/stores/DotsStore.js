@@ -25,7 +25,8 @@ class DotsStore extends EventEmitter {
       containerHeight : 400, 
       dotsRayon : 25,
       dotsCount: 0,
-      dotsNum: "?"
+      dotsNum: "?",
+      unstable: false
     };
 
     var _this = this;
@@ -84,9 +85,12 @@ class DotsStore extends EventEmitter {
   setDotsNum(){
     let dotsNum = "";
     let col = 0;
+    this.state.unstable = false;
     for(let dot of this.state.dots){
     	dotsNum = String(dot.length)+dotsNum;
     	col++;
+
+    	if(dot.length >= this.state.base && !this.state.unstable) this.state.unstable = true;
     }
     this.state.dotsNum = parseInt(dotsNum);
     if(String(parseInt(this.state.dotsNum))=="NaN") this.state.dotsNum = "?";
@@ -264,6 +268,10 @@ class DotsStore extends EventEmitter {
 
   getBottomLimit(){
     return this.state.containerHeight - (this.state.dotsRayon + 10);
+  }
+
+  isMachineStable(){
+    return !this.state.unstable;
   }
 
   /*getContainerWidth(){

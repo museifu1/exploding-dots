@@ -414,7 +414,7 @@ class VisualPanel extends Component{
   render() {
     return (
       <div className="visualPanel">
-      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span>{this.state.dotsNum}</span>
+      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={(_DotsStore.isMachineStable()) ? '' : 'baseIsOver'}>{this.state.dotsNum}</span>
       </div>
     );
   }
