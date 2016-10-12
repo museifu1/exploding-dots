@@ -12,7 +12,7 @@ export default class DotsActions {
     }
 
 
-    static addDots(_zoneIndex, _nbDots, _x, _y){
+    static addDots(_zoneIndex, _nbDots, _x, _y, _style){
 
         var obj = {
             actionType : DOTS.DOT_ADDED,
@@ -24,7 +24,8 @@ export default class DotsActions {
         if(_x !== undefined && _y !== undefined){
             obj.newdot = {
                 x : _x,
-                y : _y
+                y : _y,
+                style : _style
             }
         }
 
@@ -32,18 +33,19 @@ export default class DotsActions {
     }
 
 
-    static removeDots(_zoneIndex, _nbDots = 1, _dotIndex = -1){
+    static removeDots(_zoneIndex, _nbDots = 1, _dotIndex = -1, _style = ""){
         
         AppDispatcher.dispatch({
             actionType : DOTS.DOT_REMOVED,
             zoneIndex : _zoneIndex,
             nbDots : _nbDots,
-            dotIndex : _dotIndex
+            dotIndex : _dotIndex,
+            style : _style
         });
     }
 
 
-    static dotsChanged(_index, _value, _x, _y){
+    static dotsChanged(_index, _value, _x, _y, _style){
 
         var obj = {
             actionType : DOTS.DOTS_CHANGED,
@@ -55,7 +57,8 @@ export default class DotsActions {
         if(_x !== undefined && _y !== undefined){
             obj.newdot = {
                 x : _x,
-                y : _y
+                y : _y,
+                style : _style
             }
         }
 
