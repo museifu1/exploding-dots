@@ -391,20 +391,6 @@ class VisualPanel extends Component{
     this.state = getDotsState();
   }
 
-
-
-  // changeBase(event){
-  //   DotsActions.changeBase();
-  // }
-
-  // stabilize(event){
-  //   DotsActions.stabilize();
-  // }
-
-  // oneStepStabilize(event){
-  //   DotsActions.oneStepStabilize();
-  // }
-
   // Add change listeners to stores
   componentDidMount() {
     _DotsStore.addChangeListener(this._onChange.bind(this));
@@ -422,7 +408,7 @@ class VisualPanel extends Component{
   render() {
     return (
       <div className="visualPanel">
-      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={(_DotsStore.isMachineStable()) ? '' : 'baseIsOver'}>{this.state.dotsNum}</span>
+      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() != "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
       </div>
     );
   }
@@ -444,7 +430,7 @@ class App extends Component {
       <div className="scolab">
         <div className="App">
           <div className="App-header">
-            <h2><strong>Boum</strong> Maths</h2>
+          	<h2><strong>Bo</strong>um <em><i className="fa fa-exclamation-circle"></i></em></h2>
             <ConfigPanel />
           </div>
 
