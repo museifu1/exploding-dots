@@ -1,5 +1,5 @@
 
-import styles from './App.css';
+import './App.css';
 import './font-awesome.min.css';
 import logo from './scolab.png';
 import React, { Component } from 'react';
@@ -145,9 +145,8 @@ class SVGContainer extends React.Component {
     this.dots = [];
     statedots.forEach(function(dot, index){
         var key = zoneIndex + "." + dot.x + "." + dot.y;
-        _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
+        if(_this.dots.length <= _DotsStore.getMaxViewableDots()) _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
     });
-
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
     var style = (this.state.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
@@ -155,7 +154,7 @@ class SVGContainer extends React.Component {
 
     return (
 
-      <g transform={position} className={style} className="dropZone">
+      <g transform={position} className="dropZone">
         <rect ref="zone" className="dotBox" />
         
         <rect className="dotBoxTitle" />
@@ -226,12 +225,7 @@ class SVGFullSizeContainer extends React.Component {
 
 class SVGDot extends React.Component {
 
-
-
   constructor(props){
-
-
-
     super();
 
     this.state = {
@@ -310,8 +304,9 @@ class SVGDot extends React.Component {
   }
 
   dragged(event){
-
+    //lint fails because stage is not declared
     var m = d3.mouse(stage);
+
     d3.select("#stage circle")
       .attr("cx", m[0])
       .attr("cy", m[1]);
@@ -320,7 +315,9 @@ class SVGDot extends React.Component {
 
 
   render(){
-    var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle") + " " + this.props.style;
+
+    var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle");
+    if(this.props.style) style += " " + this.props.style;
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
@@ -409,7 +406,7 @@ class VisualPanel extends Component{
   render() {
     return (
       <div className="visualPanel">
-      {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() != "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
+        {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() !== "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
       </div>
     );
   }
@@ -420,18 +417,18 @@ class VisualPanel extends Component{
 
 class App extends Component {
 
-  constructor(options){
-    super(options); 
+  // constructor(options){
+  //   super(options); 
 
-    //this.store = new DotsStore(AppDispatcher, options.state);
-  }
+  //   //this.store = new DotsStore(AppDispatcher, options.state);
+  // }
 
   render() {
     return (
       <div className="scolab">
         <div className="App">
           <div className="App-header">
-          	<h2><strong>Bo</strong>um <em><i className="fa fa-exclamation-circle"></i></em></h2>
+          	<h2><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></h2>
             <ConfigPanel />
           </div>
 
