@@ -320,13 +320,14 @@ class SVGDot extends React.Component {
 
 
   render(){
-
     var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle") + " " + this.props.style;
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
-    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />)
+    let circle = (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />);
+    
+    return circle;
   }
 }
 

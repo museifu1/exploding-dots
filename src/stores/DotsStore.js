@@ -39,7 +39,7 @@ class DotsStore extends EventEmitter {
           _this.changeBase();
           break;
 
-        case DOTS.DOTS_CHANGED:
+        case DOTS.DOTS_CHANGED:         
           if(action.hasOwnProperty("newdot")){
              _this.state.dots[action.index].push(action.newdot);
           }else{
@@ -52,7 +52,7 @@ class DotsStore extends EventEmitter {
           break;
 
         case DOTS.DOT_ADDED:
-          console.log("action.newdot)", action.newdot)
+          console.log("action.newdot :", action.newdot)
           _this.addDots(action.zoneIndex, action.nbDots, action.newdot);
           break;
 
@@ -201,7 +201,6 @@ class DotsStore extends EventEmitter {
 
 
   updateDotsArray(dotsArray, nbDots){
-
     if(dotsArray.length > nbDots){
       dotsArray.splice(nbDots);
     }else if(dotsArray.length < nbDots){
@@ -212,7 +211,6 @@ class DotsStore extends EventEmitter {
 
 
   generateDots(nbDots){
-     
     var a = [];
     for(var i = 0; i < nbDots; i++){
 
@@ -224,7 +222,6 @@ class DotsStore extends EventEmitter {
 
     return a;
   }
-
 
   addChangeListener(cb) {
     this.on(CHANGE_EVENT, cb);
