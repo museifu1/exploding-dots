@@ -9,13 +9,13 @@ class DotsStore extends EventEmitter {
 
 
   constructor(dispatcher, state){
-  	
-  	super();
+    
+    super();
 
     this.setMaxListeners(20);
 
-  	if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
-    if (state) {      		console.error('app is created with initial state', state);    }
+    if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
+    if (state) {            console.error('app is created with initial state', state);    }
 
     this.state = { 
       base : 2 ,
@@ -23,7 +23,11 @@ class DotsStore extends EventEmitter {
       nbContainers : 5,
       containerWidth : 300,
       containerHeight : 400, 
-      dotsRayon : 25
+      dotsRayon : 25,
+      dotsCount: 0,
+      dotsNum: "?",
+      unstable: false,
+      maxViewableDots: 150
     };
 
     var _this = this;
@@ -32,49 +36,91 @@ class DotsStore extends EventEmitter {
     dispatcher.register(function (action) {
 
       switch(action.actionType){
-
         case DOTS.BASE_CHANGED:
-
           _this.changeBase();
           break;
 
-        case DOTS.DOTS_CHANGED:
+        case DOTS.DOTS_CHANGED:         
           if(action.hasOwnProperty("newdot")){
              _this.state.dots[action.index].push(action.newdot);
           }else{
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
           break;
+
         case DOTS.DOT_REMOVED:
           _this.removeDots(action.zoneIndex, action.nbDots, action.dotIndex, action.style);
           break;
+
         case DOTS.DOT_ADDED:
-          console.log("action.newdot)", action.newdot)
+          console.log("action.newdot :", action.newdot)
           _this.addDots(action.zoneIndex, action.nbDots, action.newdot);
           break;
+
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
           break;
           
         case DOTS.STABILIZE:
-          _this.stablize();         
+          _this.stablize();    
           break;
+
+        case DOTS.CLEAR:
+          _this.clearDots();         
+          break;
+
+        default:
+            break;
       }
 
+      _this.setDotsCount();
+      _this.setDotsNum();
       _this.emitChange();
 
     });
 
   }
 
+  setDotsCount(){
+    let dotsCount = 0;
+    let col = 0;
+
+    for(let dot of this.state.dots){
+        dotsCount += dot.length * Math.pow(this.state.base,col);
+        col++;
+    }
+    this.state.dotsCount = dotsCount;
+  }
+
+  setDotsNum(){
+    let dotsNum = "";
+    this.state.unstable = false;
+
+    for(let dot of this.state.dots){
+        dotsNum = String(dot.length)+dotsNum;
+
+        if(dot.length >= this.state.base && !this.state.unstable) this.state.unstable = true;
+    }
+    this.state.dotsNum = parseInt(dotsNum, 10);
+    if(String(parseInt(this.state.dotsNum, 10))==="NaN" || parseInt(this.state.dotsNum, 10) === 0) this.state.dotsNum = "?";
+  }
+
   changeBase(){
-  	let bases = [2, 3, 4, 5, 10];
+    let bases = [2, 3, 4, 5, 10];
     let next = false;
     for (let base of bases) {
       if(this.state.base < base && !next) next = base;
     }
-    if(next == false) next = bases[0];
+    if(next === false) next = bases[0];
     this.state.base = next;
+  }
+
+  clearDots(){
+    this.state.dots = [ [], [], [], [], [] ];
+    this.state.dotsRayon = 25;
+    this.state.dotsCount = 0;
+    this.state.dotsNum = "?";
+    this.state.unstable = false;
   }
 
   stablize(){
@@ -122,8 +168,6 @@ class DotsStore extends EventEmitter {
         }
       }
     });
-
-
   }
 
 
@@ -132,8 +176,8 @@ class DotsStore extends EventEmitter {
     //this.state.dots[zoneIndex][0].style = dotStyle;
     //console.log("this.state.dots[zoneIndex][0]", this.state.dots[zoneIndex][0]);
 
-    if(nbDots > 0 && dotIndex != -1){
-      var removed = this.state.dots[zoneIndex].splice(dotIndex, 1);
+    if(nbDots > 0 && dotIndex !== -1){
+      this.state.dots[zoneIndex].splice(dotIndex, 1);
       //removed[0].style = dotStyle;
       //console.log("removed", removed);
       nbDots--;
@@ -161,7 +205,6 @@ class DotsStore extends EventEmitter {
 
 
   updateDotsArray(dotsArray, nbDots){
-
     if(dotsArray.length > nbDots){
       dotsArray.splice(nbDots);
     }else if(dotsArray.length < nbDots){
@@ -172,7 +215,6 @@ class DotsStore extends EventEmitter {
 
 
   generateDots(nbDots){
-     
     var a = [];
     for(var i = 0; i < nbDots; i++){
 
@@ -184,7 +226,6 @@ class DotsStore extends EventEmitter {
 
     return a;
   }
-
 
   addChangeListener(cb) {
     this.on(CHANGE_EVENT, cb);
@@ -202,13 +243,24 @@ class DotsStore extends EventEmitter {
     //return _store;
   }
 
+  getMaxViewableDots(){
+    return this.state.maxViewableDots;
+  }
 
   getBase(){
-  	return this.state.base;
+    return this.state.base;
   }
 
   getDotsValue(){
     return this.state.dots;
+  }
+
+  getDotsCount(){
+    return this.state.dotsCount;
+  }
+
+  getDotsNum(){
+    return this.state.dotsNum;
   }
 
   getDotsValueByIndex(index){
@@ -237,6 +289,10 @@ class DotsStore extends EventEmitter {
 
   getBottomLimit(){
     return this.state.containerHeight - (this.state.dotsRayon + 10);
+  }
+
+  isMachineStable(){
+    return !this.state.unstable;
   }
 
   /*getContainerWidth(){

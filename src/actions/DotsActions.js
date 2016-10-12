@@ -78,4 +78,10 @@ export default class DotsActions {
     		actionType : DOTS.STABILIZE
     	});
     }
+
+    static clearDots(){
+    	AppDispatcher.dispatch({
+    		actionType : DOTS.CLEAR
+    	});
+    }
 }

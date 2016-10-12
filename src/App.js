@@ -1,5 +1,5 @@
 
-import styles from './App.css';
+import './App.css';
 import './font-awesome.min.css';
 import logo from './scolab.png';
 import React, { Component } from 'react';
@@ -23,7 +23,9 @@ var getDotsStateByIndex = (index) => {
 var getDotsState = () => {
   return {
     base : _DotsStore.getBase(),
-    dots : _DotsStore.getDotsValue()
+    dots : _DotsStore.getDotsValue(),
+    dotsCount: _DotsStore.getDotsCount(),
+    dotsNum: _DotsStore.getDotsNum()
   }
 }
 
@@ -143,9 +145,8 @@ class SVGContainer extends React.Component {
     this.dots = [];
     statedots.forEach(function(dot, index){
         var key = zoneIndex + "." + dot.x + "." + dot.y;
-        _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
+        if(_this.dots.length <= _DotsStore.getMaxViewableDots()) _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
     });
-
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
     var style = (this.state.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
@@ -153,7 +154,7 @@ class SVGContainer extends React.Component {
 
     return (
 
-      <g transform={position} className={style} className="dropZone">
+      <g transform={position} className="dropZone">
         <rect ref="zone" className="dotBox" />
         
         <rect className="dotBoxTitle" />
@@ -224,12 +225,7 @@ class SVGFullSizeContainer extends React.Component {
 
 class SVGDot extends React.Component {
 
-
-
   constructor(props){
-
-
-
     super();
 
     this.state = {
@@ -308,8 +304,9 @@ class SVGDot extends React.Component {
   }
 
   dragged(event){
-
+    //lint fails because stage is not declared
     var m = d3.mouse(stage);
+
     d3.select("#stage circle")
       .attr("cx", m[0])
       .attr("cy", m[1]);
@@ -319,12 +316,15 @@ class SVGDot extends React.Component {
 
   render(){
 
-    var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle") + " " + this.props.style;
+    var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle");
+    if(this.props.style) style += " " + this.props.style;
 
     var x = Math.min(Math.max(this.props.x, _DotsStore.getRightLimit()), _DotsStore.getLeftLimit());
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
-    return (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />)
+    let circle = (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />);
+    
+    return circle;
   }
 }
 
@@ -339,10 +339,12 @@ class ConfigPanel extends Component{
     this.state = {base : 2 };
   }
 
-
-
   changeBase(event){
     DotsActions.changeBase();
+  }
+
+  reset(event){
+  	DotsActions.clearDots();
   }
 
   stabilize(event){
@@ -371,8 +373,40 @@ class ConfigPanel extends Component{
     return (
       <div className="configPanel">
         <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
-        <button onClick={this.stabilize}><i className="fa fa-play"></i></button>
+        <button onClick={this.stabilize} className="play"><i className="fa fa-play"></i></button>
         <button onClick={this.oneStepStabilize} className="explode"><i className="fa fa-magic"></i></button>
+        <button onClick={this.reset} className="reset"><i className="fa fa-refresh"></i></button>
+      </div>
+    );
+  }
+}
+
+class VisualPanel extends Component{
+
+
+  constructor(props){
+    super();
+    this.state = getDotsState();
+  }
+
+  // Add change listeners to stores
+  componentDidMount() {
+    _DotsStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  // Remove change listeners from stores
+  componentWillUnmount() {
+    _DotsStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange(){
+    this.setState(getDotsState());
+  }
+
+  render() {
+    return (
+      <div className="visualPanel">
+        {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() !== "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
       </div>
     );
   }
@@ -383,22 +417,23 @@ class ConfigPanel extends Component{
 
 class App extends Component {
 
-  constructor(options){
-    super(options); 
+  // constructor(options){
+  //   super(options); 
 
-    //this.store = new DotsStore(AppDispatcher, options.state);
-  }
+  //   //this.store = new DotsStore(AppDispatcher, options.state);
+  // }
 
   render() {
     return (
       <div className="scolab">
         <div className="App">
           <div className="App-header">
-            <h2>Exploding <strong>dots</strong></h2>
+          	<h2><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></h2>
             <ConfigPanel />
           </div>
 
           <div className="App-intro">
+            <VisualPanel />
             <div className="dotsContainers">
 	            <DotsContainer index="4" />
 	            <DotsContainer index="3" />
