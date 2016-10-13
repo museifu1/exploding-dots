@@ -1,7 +1,5 @@
 
 import './App.css';
-import './font-awesome.min.css';
-import logo from './scolab.png';
 import React, { Component } from 'react';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
@@ -417,11 +415,11 @@ class VisualPanel extends Component{
 
 class App extends Component {
 
-  // constructor(options){
-  //   super(options); 
+  constructor(options){
+    super(options); 
 
-  //   //this.store = new DotsStore(AppDispatcher, options.state);
-  // }
+    this.logo = options.logo;
+  }
 
   render() {
     return (
@@ -448,7 +446,7 @@ class App extends Component {
           </div>
         </div>
         <div className="credits">
-          <a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
+          <a href="http://www.scolab.com" target="_blank">Une présentation de <img src={this.logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
         </div>
       </div>
     );

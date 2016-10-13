@@ -1,7 +1,7 @@
-body
-{
-  background-color: #267be5;
-  font: 1em/1.45em 'Lato', sans-serif;
+#boum{
+	background-color: #267be5;
+	overflow: auto;
+	width: 100%;
 }
 
 .scolab{
