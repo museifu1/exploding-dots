@@ -48,11 +48,12 @@
 :local(.intro){
 	background: #FFF;
 	box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.2);
-	margin: 2em 0;
+	margin: 3em auto;
 	max-width: 900px;
 	padding: 15px 40px;
 }
 :local(.subscribe){
 	composes: intro;
+	max-width: 400px;
 	text-align: center;
 }
