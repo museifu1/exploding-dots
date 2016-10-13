@@ -1,7 +1,10 @@
 #boum{
 	background-color: #267be5;
+	min-height: 100%;
 	overflow: auto;
+	position: relative;
 	width: 100%;
+	z-index: 1;
 }
 
 .scolab{
@@ -55,13 +58,6 @@
   padding: 0 40px;
   text-transform: uppercase;
   width: 98%;
-}
-.App-header h2 strong{
-	font-weight: 700;
-}
-.App-header h2 em{
-	color: #167ce6;
-	// color: #34d293;
 }
 
 .configPanel{

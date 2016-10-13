@@ -1,5 +1,58 @@
 #landing{
-  background: red;
+  height: 100%;
   overflow: auto;
+  // display: none;
+}
+:local(.home){
+  min-height: 100%;
+  overflow: auto;
+  position: relative;
   width: 100%;
+  z-index: 1;
+}
+:local(.bg){
+  background-position: center center;
+  background-size: cover;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  z-index: 0;
+}
+:local(.landing){
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 0 20px;
+  position: relative;
+}
+:local(.landing) h1{
+	font-size: 4em;
+	margin: 1.5em 0 0 0;
+	text-align: center;
+}
+:local(.landing) h2{
+	font-size: 2em;
+	margin: 0.3em 0;
+	padding: 0;
+	text-align: center;
+	text-transform: uppercase;
+}
+:local(.landing) a{
+	color: #167ce6;
+}
+:local(.landing) a:hover{
+	color: #28a3ff;
+	text-decoration: none;
+}
+:local(.intro){
+	background: #FFF;
+	box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.2);
+	margin: 2em 0;
+	max-width: 900px;
+	padding: 15px 40px;
+}
+:local(.subscribe){
+	composes: intro;
+	text-align: center;
 }

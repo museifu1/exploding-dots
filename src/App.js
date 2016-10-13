@@ -415,10 +415,10 @@ class VisualPanel extends Component{
 
 class App extends Component {
 
-  constructor(options){
-    super(options); 
+  constructor(props){
+    super(props); 
 
-    this.logo = options.logo;
+    this.logo = props.logo;
   }
 
   render() {
@@ -426,7 +426,7 @@ class App extends Component {
       <div className="scolab">
         <div className="App">
           <div className="App-header">
-          	<h2><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></h2>
+          <h2><span className="boum"><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></span></h2>
             <ConfigPanel />
           </div>
 

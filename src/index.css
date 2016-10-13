@@ -4,3 +4,21 @@ body {
   padding: 0;
   // font-family: sans-serif;
 }
+
+html, body{
+  height: 100%;
+  // overflow: auto;
+}
+
+.boum{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.boum strong{
+  font-weight: 700;
+}
+.boum em{
+  color: #167ce6;
+  // color: #34d293;
+}
