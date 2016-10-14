@@ -5,13 +5,14 @@ import Home from './Home';
 import './index.css';
 import './font-awesome.min.css';
 import logo from './scolab.png';
-import bg from './scolab_office_blur.jpg';
+import bg from './Netmaths_photo_classe_05_low.jpg';
+import boum from './boum-logo.png';
 
 ReactDOM.render(
-  <App logo={logo} />,
+  <App logo={logo} boum={boum} />,
   document.getElementById('boum')
 );
 ReactDOM.render(
-  <Home bg={bg} />,
+  <Home bg={bg} logo={logo} boum={boum} />,
   document.getElementById('landing')
 );

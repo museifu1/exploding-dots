@@ -20,12 +20,26 @@
 
 .credits{
 	opacity: 0.5;
-	padding: 15px 5px;
+	padding: 20px 25px;
 	text-align: right;
 }
 .credits a{
 	color: #000;
 	text-decoration: none;	
+}
+.credits a:focus,
+.credits a:hover{
+	border-bottom: 1px solid #000;
+	color: #000;
+}
+.credits p{
+	float: right;
+	line-height: normal;
+	margin: 0;
+}
+.credits .license{
+	float: left;
+	text-align: left;
 }
 
 /* &harr; */
@@ -379,6 +393,15 @@ body {
 	}
 	.dotsContainers{
 		// margin-top: -8px;
+	}
+	.credits p{
+		display: block;
+		float: none;
+	}
+	.credits .license{
+		float: none;
+		padding-top: 0.5em;
+		text-align: center;
 	}
 }
 @media (max-width: 767px) {
