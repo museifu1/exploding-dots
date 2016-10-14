@@ -34,7 +34,7 @@ class Home extends Component {
   }
 
   scrollToApp(){
-    window.location = "#boum";
+    window.location = "#jeu";
   }
 
   render() {

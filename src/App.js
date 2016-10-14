@@ -419,14 +419,15 @@ class App extends Component {
     super(props); 
 
     this.logo = props.logo;
+    this.boum = props.boum;
   }
 
   render() {
     return (
-      <div className="scolab">
+      <div id="jeu" className="scolab">
         <div className="App">
           <div className="App-header">
-          <h2><span className="boum"><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></span></h2>
+          <h2><img src={this.boum} alt="Boum, Le Jeu Mathématique" /></h2>
             <ConfigPanel />
           </div>
 
