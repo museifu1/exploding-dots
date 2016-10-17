@@ -1,0 +1,235 @@
+#landing{
+  min-height: 100%;
+  // overflow: auto;
+  // padding-bottom: 60px;
+  // display: none;
+}
+:local(.home){
+  min-height: 100%;
+  overflow: visible;
+  // padding-bottom: 60px;
+  // position: relative;
+  width: 100%;
+  z-index: 1;
+}
+:local(.bg){
+  background-position: center center;
+  background-size: cover;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  z-index: 0;
+}
+:local(.landing){
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 0 20px 60px;
+  position: relative;
+}
+:local(.landing) h1{
+  font-size: 4em;
+  margin: 0 0 0.3em;
+  padding-top: 0.8em;
+  text-align: center;
+}
+:local(.landing) h1 img{
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.5);
+  width: 200px;
+}
+:local(.landing) h2{
+  color: #FFF;
+  font-size: 2.5em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin: 1em 0;
+  padding: 0;
+  text-align: center;
+  text-shadow: 3px 3px rgba(0, 0, 0, 0.7);
+  text-transform: uppercase;
+}
+:local(.landing) h3{
+  clear: both;
+  color: #FFF;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0 0;
+  padding: 2em 0 0;
+  text-align: center;
+  text-shadow: 3px 3px rgba(0, 0, 0, 0.7);
+  text-transform: uppercase;
+}
+:local(.landing) a{
+  color: #167ce6;
+  cursor: pointer;
+}
+:local(.landing) a:hover{
+  color: #28a3ff;
+  text-decoration: none;
+}
+:local(.box){
+  background: #FFF;
+  // border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  margin: 1em auto;
+  padding: 25px 40px;
+}
+:local(.intro){
+  composes: box;
+  margin-top: 2.5em;
+  max-width: 720px;
+}
+:local(.half){
+  // overflow: visible;
+  margin: 0 auto;
+  max-width: 720px;
+  width: 100%;
+}
+:local(.subscribe){
+  background: #167ce6;
+  // background: #69bfff;
+  // background-color: #999;
+  color: #FFF;
+  composes: box;
+  float: left;
+  width: 48%;
+  // margin-right: 2em;
+  // margin-top: -4em;
+  // padding: 0 20px;
+}
+:local(.subscribe) #mc_embed_signup{
+  background: none;
+  color: inherit;
+  padding-top: 1em;
+}
+:local(.subscribe) #mc_embed_signup form{
+  padding: 0;
+}
+:local(.subscribe) #mc_embed_signup .button{
+  background: #999;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.1);
+  // color: rgba(0,0,0,0.75);
+  color: #FFF;
+  cursor: pointer;
+  font: 400 1em/40px 'Montserrat', sans-serif;
+  font-weight: 700;
+  height: auto;
+  outline: none;
+  padding: 0 20px;
+  text-transform: uppercase;
+  transition: transform 0.2s, background 0.2s;
+  width: 100%;
+}
+:local(.subscribe) #mc_embed_signup .email{
+  box-sizing: border-box;
+  box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.1);
+  font-family: 'Lato', sans-serif;
+  line-height: 40px;
+  text-align: center;
+  width: 100%;
+}
+:local(.subscribe) #mc_embed_signup .button:active,
+:local(.subscribe) #mc_embed_signup .button:hover{
+  background: #e28c1a;
+  transform: scale(1.08,1.08);
+}
+
+:local(.invite){
+  composes: box;
+  width: 48%;
+  float: right;
+  // margin-right: 2em;
+  // margin-top: -4em;
+  // padding: 0 20px;
+}
+:local(.CTA){
+  background: none;
+  border: none;
+  color: #167ce6;
+  cursor: pointer;
+  display: block;
+  font-size: 4em;
+  line-height: normal;
+  margin: 0 auto;
+  text-align: center;
+  transition: transform 0.2s, background 0.2s;
+}
+:local(.CTA) i{
+  position: relative;
+}
+:local(.CTA) i:before{
+  position: relative;
+  z-index: 1;
+}
+:local(.CTA) i:after{
+  color: #53b5ff;
+  content: "\f078";
+  display: block;
+  font-size: 0.4em;
+  position: absolute;
+  left: 19px;
+  top: 25px;
+  transition: top 0.2s;
+  z-index: 0;
+}
+:local(.CTA):hover{
+  transform: scale(1.5,1.5);
+}
+:local(.CTA):hover i:after{
+  top: 10px;
+}
+:local(.team){
+  display: inline-block;
+  list-style: none;
+  text-align: center;
+  margin: 1em auto;
+  padding: 0;
+  width: 100%;
+}
+:local(.team) li{
+  display: inline-block;
+  margin: 0.4em;
+  padding: 0;
+}
+:local(.team) img{
+  border: 5px solid #FFF;
+  border-radius: 50%;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.5);
+  display: block;
+  width: 80px;
+  transition: transform 0.2s;
+}
+:local(.team) img:hover{
+  transform: scale(1.15,1.15);
+}
+
+@media (max-width: 600px) {
+  :local(.landing) h2{
+    font-size: 1.6em;
+  }
+  :local(.subscribe){
+    float: none;
+    width: 100%;
+  }
+  :local(.invite){
+    float: none;
+    width: 100%;
+  }
+}
+@media (max-width: 360px) {
+  :local(.landing) h2{
+    font-size: 1.3em;
+  }
+  :local(.subscribe){
+    float: none;
+    width: 100%;
+  }
+  :local(.invite){
+    float: none;
+    width: 100%;
+  }
+}

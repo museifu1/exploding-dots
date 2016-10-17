@@ -1,11 +1,15 @@
-body
-{
-  background-color: #267be5;
-  font: 1em/1.45em 'Lato', sans-serif;
+#boum{
+	background-color: #267be5;
+	min-height: 100%;
+	overflow: auto;
+	position: relative;
+	width: 100%;
+	z-index: 1;
 }
 
 .scolab{
-	margin: 45px auto;
+	margin: 0 auto;
+	padding: 45px 0;
 	max-width: 900px;
   	text-align: center;
 }
@@ -17,12 +21,26 @@ body
 
 .credits{
 	opacity: 0.5;
-	padding: 15px 5px;
+	padding: 20px 25px;
 	text-align: right;
 }
 .credits a{
 	color: #000;
 	text-decoration: none;	
+}
+.credits a:focus,
+.credits a:hover{
+	border-bottom: 1px solid #000;
+	color: #000;
+}
+.credits p{
+	float: right;
+	line-height: normal;
+	margin: 0;
+}
+.credits .license{
+	float: left;
+	text-align: left;
 }
 
 /* &harr; */
@@ -43,6 +61,7 @@ body
   padding: 10px;
   color: #555;
   margin-bottom: 20px;**/
+  height: 80px;
   position: relative;
   text-align: left;
 }
@@ -53,15 +72,15 @@ body
   margin-bottom: 8px;
   margin: 0 1%;
   padding: 0 40px;
+  position: relative;
   text-transform: uppercase;
   width: 98%;
 }
-.App-header h2 strong{
-	font-weight: 700;
-}
-.App-header h2 em{
-	color: #167ce6;
-	// color: #34d293;
+.App-header h2 img{
+	height: 60px;
+	left: 40px;
+	position: absolute;
+	top: 10px;
 }
 
 .configPanel{
@@ -365,7 +384,7 @@ body {
 
 @media (max-width: 940px) {
 	.scolab{
-		margin: 45px 20px;
+		margin: 0 20px;
 	}
 	.App{
 		// font-size: 0.5em;
@@ -384,15 +403,34 @@ body {
 	.dotsContainers{
 		// margin-top: -8px;
 	}
+	.credits p{
+		display: block;
+		float: none;
+	}
+	.credits .license{
+		float: none;
+		padding-top: 0.5em;
+		text-align: center;
+	}
 }
 @media (max-width: 767px) {
+	#boum{
+		padding-top: 45px;
+	}
 	.scolab{
-		margin: 0 0 45px;
+		margin-top: 0;
+		padding-top: 0;
 	}
 }
 @media (max-width: 720px) {
 	.App{
 		font-size: 0.9em;
+	}
+	.App-header{
+		height: 70px;
+	}
+	.App-header h2 img{
+		height: 50px;
 	}
 	.configPanel{
 		font-size: 1.8em;
@@ -408,6 +446,14 @@ body {
 	}
 	.App-header h2{
 		padding-left: 10px;
+	}
+	.App-header{
+		height: 58px;
+	}
+	.App-header h2 img{
+		height: 48px;
+		left: 10px;
+		top: 5px;
 	}
 	.App-intro{
 		padding: 10px;
@@ -462,6 +508,10 @@ body {
 	}
 	.App-header h2{
 		font-size: 2.8em;
+	}
+	.App-header h2 img{
+		height: 35px;
+		top: 12px;
 	}
 	.configPanel button{
 		font-size: 1.2em;

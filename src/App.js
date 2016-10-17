@@ -1,7 +1,5 @@
 
 import './App.css';
-import './font-awesome.min.css';
-import logo from './scolab.png';
 import React, { Component } from 'react';
 import DotsActions from './actions/DotsActions.js'
 import DotsStore from './stores/DotsStore.js'
@@ -161,7 +159,7 @@ class SVGContainer extends React.Component {
         <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(this.state.base,this.props.index)}</text>
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style} 
-        	transitionEnterTimeout={300} transitionLeaveTimeout={500}>
+          transitionEnterTimeout={300} transitionLeaveTimeout={500}>
           {this.dots}
         </ReactCSSTransitionGroup>
       </g>
@@ -344,7 +342,7 @@ class ConfigPanel extends Component{
   }
 
   reset(event){
-  	DotsActions.clearDots();
+    DotsActions.clearDots();
   }
 
   stabilize(event){
@@ -417,30 +415,31 @@ class VisualPanel extends Component{
 
 class App extends Component {
 
-  // constructor(options){
-  //   super(options); 
+  constructor(props){
+    super(props); 
 
-  //   //this.store = new DotsStore(AppDispatcher, options.state);
-  // }
+    this.logo = props.logo;
+    this.boum = props.boum;
+  }
 
   render() {
     return (
-      <div className="scolab">
+      <div id="jeu" className="scolab">
         <div className="App">
           <div className="App-header">
-          	<h2><strong>Bo</strong>um<em>&thinsp;<i className="fa fa-exclamation-circle"></i></em></h2>
+          <h2><img src={this.boum} alt="Boum, Le Jeu Mathématique" /></h2>
             <ConfigPanel />
           </div>
 
           <div className="App-intro">
             <VisualPanel />
             <div className="dotsContainers">
-	            <DotsContainer index="4" />
-	            <DotsContainer index="3" />
-	            <DotsContainer index="2" />
-	            <DotsContainer index="1" />
-	            <DotsContainer index="0" />
-	          </div>
+              <DotsContainer index="4" />
+              <DotsContainer index="3" />
+              <DotsContainer index="2" />
+              <DotsContainer index="1" />
+              <DotsContainer index="0" />
+            </div>
 
             <div className="dotsFullSizeContainers">
               <SVGFullSizeContainer className="SVGFullSizeContainer" />
@@ -448,7 +447,8 @@ class App extends Component {
           </div>
         </div>
         <div className="credits">
-          <a href="http://www.scolab.com" target="_blank">Une présentation de <img src={logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a>
+          <p><a href="http://www.scolab.com" target="_blank">Un projet de <img src={this.logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a></p>
+          <p className="license"><small>Cette œuvre est mise à disposition selon les termes de la <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence Creative Commons Attribution 4.0 International</a>.</small></p>
         </div>
       </div>
     );
