@@ -45,7 +45,7 @@ class Home extends Component {
           <h1><img src={this.boum} alt="Boum, Le Jeu Mathématique" /></h1>
           <h2>Le Jeu Mathématique</h2>
           <div className={style.intro}>
-          <p>&laquo;&nbsp;<strong>BOUM</strong>&nbsp;&raquo; est une version numérique du jeu mathématique <em>&laquo;&nbsp;Exploding Dots&nbsp;&raquo;</em> popularisé par James Tanton. Cet outil pédagogique est développé par <strong><a href="http://www.scolab.com" target="_blank">Scolab</a></strong> et distribué gratuitement dans le contexte du <em><a href="https://www.theglobalmathproject.org">Global Math Week 2017</a></em>.</p>
+          <p>&laquo;&nbsp;<strong>BOUM</strong>&nbsp;&raquo; est une version numérique du jeu mathématique <em>&laquo;&nbsp;Exploding Dots&nbsp;&raquo;</em> popularisé par James Tanton. Cet outil pédagogique est développé par <strong><a href="http://www.scolab.com" target="_blank">Scolab</a></strong> et distribué gratuitement dans le contexte du <em><a href="https://www.theglobalmathproject.org" target="_blank">Global Math Week 2017</a></em>.</p>
           </div>
 
           <div className={style.half}>
