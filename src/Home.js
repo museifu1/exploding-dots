@@ -54,7 +54,7 @@ class Home extends Component {
               <div dangerouslySetInnerHTML={mailchimp_form()} />
             </div>
             <div className={style.invite}>
-              <p>Entre temps, nous vous invitons à jouer avec une première version de notre prototype.</p>
+              <p>Entre-temps, nous vous invitons à jouer avec une première version de notre prototype.</p>
               <div><button onClick={this.scrollToApp} className={style.CTA}><i className="fa fa-chevron-down"></i></button></div>
             </div>
           </div>
