@@ -78,7 +78,7 @@ class DotsContainer extends Component{
 
 
   render() {
-
+    console.log("[DotsContainer] render()");
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -134,6 +134,7 @@ class SVGContainer extends React.Component {
 
 
   render() {
+    console.log("[SVGContainer] render()");
 
     var statedots = _DotsStore.getDotsValue()[this.props.index];
 
@@ -143,7 +144,8 @@ class SVGContainer extends React.Component {
     this.dots = [];
     statedots.forEach(function(dot, index){
         var key = zoneIndex + "." + dot.x + "." + dot.y;
-        if(_this.dots.length <= _DotsStore.getMaxViewableDots()) _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
+        if(_this.dots.length <= _DotsStore.getMaxViewableDots())
+          _this.dots.push(<SVGDot key={key} index={index} x={dot.x} y={dot.y} style={dot.style} positive={true} zoneIndex={zoneIndex} />);
     });
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
@@ -197,6 +199,7 @@ class SVGFullSizeContainer extends React.Component {
   }
 
   render() {
+    console.log("[SVGFullSizeContainer] render()");
 
     return (
       <div className="SVGContainer">
@@ -304,7 +307,7 @@ class SVGDot extends React.Component {
   dragged(event){
     //lint fails because stage is not declared
     var m = d3.mouse(stage);
-
+    console.log("dragged", m);
     d3.select("#stage circle")
       .attr("cx", m[0])
       .attr("cy", m[1]);
@@ -313,6 +316,7 @@ class SVGDot extends React.Component {
 
 
   render(){
+    console.log("[SVGDot] render()");
 
     var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle");
     if(this.props.style) style += " " + this.props.style;
@@ -368,6 +372,7 @@ class ConfigPanel extends Component{
   }
 
   render() {
+    console.log("[ConfigPanel] render()");
     return (
       <div className="configPanel">
         <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
@@ -402,6 +407,7 @@ class VisualPanel extends Component{
   }
 
   render() {
+    console.log("[VisualPanel] render()");
     return (
       <div className="visualPanel">
         {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() !== "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
@@ -423,6 +429,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("[App] render()");
     return (
       <div id="jeu" className="scolab">
         <div className="App">
