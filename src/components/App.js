@@ -1,9 +1,9 @@
 
-import './App.css';
+import './../css/App.css';
 import React, { Component } from 'react';
-import DotsActions from './actions/DotsActions.js'
-import DotsStore from './stores/DotsStore.js'
-import AppDispatcher from './dispatchers/AppDispatcher';
+import DotsActions from './../actions/DotsActions.js'
+import DotsStore from './../stores/DotsStore.js'
+import AppDispatcher from './../dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import * as d3 from 'd3';
 
@@ -30,14 +30,14 @@ var getDotsState = () => {
 
 
 class DotsContainer extends Component{
-  
+
   constructor(props){
     super();
     this.state = {
       base : 2,
       value : 0,
       index: props.index
-    }; 
+    };
 
   }
 
@@ -93,7 +93,7 @@ class DotsContainer extends Component{
 
 
 class SVGContainer extends React.Component {
-  
+
 
   constructor(props){
     super();
@@ -132,7 +132,7 @@ class SVGContainer extends React.Component {
   }
 
 
-  
+
   render() {
 
     var statedots = _DotsStore.getDotsValue()[this.props.index];
@@ -154,16 +154,16 @@ class SVGContainer extends React.Component {
 
       <g transform={position} className="dropZone">
         <rect ref="zone" className="dotBox" />
-        
+
         <rect className="dotBoxTitle" />
         <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(this.state.base,this.props.index)}</text>
 
-        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style} 
+        <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style}
           transitionEnterTimeout={300} transitionLeaveTimeout={500}>
           {this.dots}
         </ReactCSSTransitionGroup>
       </g>
-        
+
     );
   }
 }
@@ -171,7 +171,7 @@ class SVGContainer extends React.Component {
 
 
 class SVGFullSizeContainer extends React.Component {
-  
+
 
   constructor(props){
     super();
@@ -195,7 +195,7 @@ class SVGFullSizeContainer extends React.Component {
   _onChange(){
     this.setState(getDotsState());
   }
-  
+
   render() {
 
     return (
@@ -276,7 +276,7 @@ class SVGDot extends React.Component {
       if(posInZone[0] > 0 && posInZone[1] > 0 && posInZone[1] < boundingZone.bottom){
         currentZoneIndex = dropzones._groups[0].length - index - 1;
         currentZone = zone;
-      }      
+      }
     });
 
     var diffZone = this.state.zoneIndex - currentZoneIndex;
@@ -321,7 +321,7 @@ class SVGDot extends React.Component {
     var y = Math.min(Math.max(this.props.y, _DotsStore.getTopLimit()), _DotsStore.getBottomLimit());
 
     let circle = (<circle ref="dot" cx={x} cy={y} r={_DotsStore.getDotsRayon()} className={style} />);
-    
+
     return circle;
   }
 }
@@ -416,7 +416,7 @@ class VisualPanel extends Component{
 class App extends Component {
 
   constructor(props){
-    super(props); 
+    super(props);
 
     this.logo = props.logo;
     this.boum = props.boum;
@@ -456,5 +456,3 @@ class App extends Component {
 }
 
 export default App;
-
-

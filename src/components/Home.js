@@ -1,5 +1,5 @@
 
-import style from './Home.css';
+import style from './../css/Home.css';
 import React, { Component } from 'react';
 
 function mailchimp_form() { return {__html: `<!-- Begin MailChimp Signup Form -->
@@ -12,7 +12,7 @@ function mailchimp_form() { return {__html: `<!-- Begin MailChimp Signup Form --
   <div id="mc_embed_signup">
   <form action="//scolab.us1.list-manage.com/subscribe/post?u=2ee384b2ff8dde377edc61ead&amp;id=c35356d940" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
       <div id="mc_embed_signup_scroll">
-    
+
     <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="adresse courriel" required>
       <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
       <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_2ee384b2ff8dde377edc61ead_c35356d940" tabindex="-1" value=""></div>
@@ -26,7 +26,7 @@ function mailchimp_form() { return {__html: `<!-- Begin MailChimp Signup Form --
 class Home extends Component {
 
   constructor(props){
-    super(props); 
+    super(props);
 
     this.bg = props.bg;
     this.logo = props.logo;
@@ -77,5 +77,3 @@ class Home extends Component {
 }
 
 export default Home;
-
-

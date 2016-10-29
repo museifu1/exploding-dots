@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import Home from './Home';
-import './index.css';
-import './font-awesome.min.css';
-import logo from './scolab.png';
-import bg from './Netmaths_photo_classe_05_low.jpg';
-import boum from './boum-logo.png';
+import App from './components/App';
+import Home from './components/Home';
+import './css/index.css';
+import './css/font-awesome.min.css';
+import logo from './images/scolab.png';
+import bg from './images/Netmaths_photo_classe_05_low.jpg';
+import boum from './images/boum-logo.png';
 
 ReactDOM.render(
   <App logo={logo} boum={boum} />,
