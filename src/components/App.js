@@ -6,6 +6,7 @@ import DotsStore from './../stores/DotsStore.js'
 import AppDispatcher from './../dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import * as d3 from 'd3';
+import shallowequal from'shallowequal';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -73,9 +74,9 @@ class DotsContainer extends Component{
     _DotsStore.removeChangeListener(this._onChange.bind(this));
   }
 
-
-
-
+  shouldComponentUpdate(nextProps, nextState){
+    return !shallowequal(this.state, nextState);
+  }
 
   render() {
     console.log("[DotsContainer] render()");
@@ -100,8 +101,7 @@ class SVGContainer extends React.Component {
 
     this.state = {
       width : 300,
-      height : 400,
-      base : 2
+      height : 400
     }
 
     this.dots = [];
@@ -109,18 +109,12 @@ class SVGContainer extends React.Component {
 
   // Add change listeners to stores
   componentDidMount() {
-     _DotsStore.addChangeListener(this._onChange.bind(this));
     d3.select(this.refs.zone).on("click", this.addDot.bind(this) );
-  }
-
-  _onChange(){
-    this.setState(getDotsStateByIndex(this.props.index));
   }
 
   // Remove change listeners from stores
   componentWillUnmount() {
     d3.select(this.refs.zone).on("click", null );
-    _DotsStore.removeChangeListener(this._onChange.bind(this));
   }
 
   addDot(event){
@@ -131,12 +125,28 @@ class SVGContainer extends React.Component {
     DotsActions.dotsChanged(this.props.index, v, pos[0], pos[1]);
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    if(this.props.base != nextProps.base){
+      return true;
+    }
 
+    if(this.props.dots.length != nextProps.dots.length){
+      return true;
+    }
+
+    for (let i = 0 ; i < this.props.dots.length; i++){
+      if(!shallowequal(this.props.dots[i], nextProps.dots[i])){
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   render() {
     console.log("[SVGContainer] render()");
 
-    var statedots = _DotsStore.getDotsValue()[this.props.index];
+    var statedots = this.props.dots;
 
     var zoneIndex = this.props.index;
     var _this = this;
@@ -149,7 +159,7 @@ class SVGContainer extends React.Component {
     });
 
     var reverseIndex = (_DotsStore.getNbContainers() - this.props.index - 1);
-    var style = (this.state.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
+    var style = (this.props.base <= this.dots.length) ? "dotGroup shaking" : "dotGroup";
     var position = `translate(${reverseIndex*(this.state.width+20)},0)`;
 
     return (
@@ -158,7 +168,7 @@ class SVGContainer extends React.Component {
         <rect ref="zone" className="dotBox" />
 
         <rect className="dotBoxTitle" />
-        <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(this.state.base,this.props.index)}</text>
+        <text x={(this.state.width/2)+9} y="45" className="dotBoxTitleText" textAnchor="middle">{Math.pow(this.props.base,this.props.index)}</text>
 
         <ReactCSSTransitionGroup transitionName="svgDot" component="g" className={style}
           transitionEnterTimeout={300} transitionLeaveTimeout={500}>
@@ -179,7 +189,8 @@ class SVGFullSizeContainer extends React.Component {
     super();
 
     this.state = {
-      dots : [0, 0, 0, 0, 0]
+      dots : [ [], [], [], [], [] ],
+      base : 2
     }
   }
 
@@ -207,11 +218,11 @@ class SVGFullSizeContainer extends React.Component {
 
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 400">
             <g>
-              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots} />
-              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots} />
-              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots} />
-              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots} />
-              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots} />
+              <SVGContainer className="SVGContainer" index={4} dots={this.state.dots[4]} base={this.state.base}/>
+              <SVGContainer className="SVGContainer" index={3} dots={this.state.dots[3]} base={this.state.base}/>
+              <SVGContainer className="SVGContainer" index={2} dots={this.state.dots[2]} base={this.state.base}/>
+              <SVGContainer className="SVGContainer" index={1} dots={this.state.dots[1]} base={this.state.base}/>
+              <SVGContainer className="SVGContainer" index={0} dots={this.state.dots[0]} base={this.state.base}/>
             </g>
             <g id="stage">
               <SVGDot key={0} x={0} y={0} positive={true} zoneIndex={0} className="draggedDot" />
@@ -230,7 +241,6 @@ class SVGDot extends React.Component {
     super();
 
     this.state = {
-      zoneIndex : props.zoneIndex,
       selected:false
     };
   }
@@ -282,19 +292,19 @@ class SVGDot extends React.Component {
       }
     });
 
-    var diffZone = this.state.zoneIndex - currentZoneIndex;
+    var diffZone = this.props.zoneIndex - currentZoneIndex;
     var dotsToRemove = 1;
     if(diffZone < 0){
       dotsToRemove = Math.pow(_DotsStore.getBase(), diffZone*-1);
     }
 
     //Remove the dots
-    var finalNbOfDots = _DotsStore.getDotsValueByIndex(this.state.zoneIndex) - dotsToRemove;
+    var finalNbOfDots = _DotsStore.getDotsValueByIndex(this.props.zoneIndex) - dotsToRemove;
     if(finalNbOfDots < 0){
       alert("Pas assez de points disponibles pour cette opération");
       return false;
     }
-    DotsActions.removeDots(this.state.zoneIndex, dotsToRemove, this.props.index, "no-animation");
+    DotsActions.removeDots(this.props.zoneIndex, dotsToRemove, this.props.index, "no-animation");
 
     //Add the new dots
     var newNbOfDots = Math.pow(_DotsStore.getBase(), diffZone);
@@ -307,13 +317,14 @@ class SVGDot extends React.Component {
   dragged(event){
     //lint fails because stage is not declared
     var m = d3.mouse(stage);
-    console.log("dragged", m);
     d3.select("#stage circle")
       .attr("cx", m[0])
       .attr("cy", m[1]);
   }
 
-
+  shouldComponentUpdate(nextProps, nextState){
+    return !shallowequal(this.props, nextProps) || !shallowequal(this.state, nextState);
+  }
 
   render(){
     console.log("[SVGDot] render()");
@@ -371,6 +382,10 @@ class ConfigPanel extends Component{
     this.setState({base : _DotsStore.getBase()});
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return this.state.base != nextState.base;
+  }
+
   render() {
     console.log("[ConfigPanel] render()");
     return (
@@ -404,6 +419,10 @@ class VisualPanel extends Component{
 
   _onChange(){
     this.setState(getDotsState());
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    return this.state.dotsCount != nextState.dotsCount;
   }
 
   render() {

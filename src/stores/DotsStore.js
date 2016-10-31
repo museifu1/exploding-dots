@@ -9,7 +9,7 @@ class DotsStore extends EventEmitter {
 
 
   constructor(dispatcher, state){
-    
+
     super();
 
     this.setMaxListeners(20);
@@ -17,12 +17,12 @@ class DotsStore extends EventEmitter {
     if (!dispatcher) {      console.error(new Error('Store: dispatcher is required'));    }
     if (state) {            console.error('app is created with initial state', state);    }
 
-    this.state = { 
+    this.state = {
       base : 2 ,
       dots : [ [], [], [], [], [] ],
       nbContainers : 5,
       containerWidth : 300,
-      containerHeight : 400, 
+      containerHeight : 400,
       dotsRayon : 25,
       dotsCount: 0,
       dotsNum: "?",
@@ -40,9 +40,12 @@ class DotsStore extends EventEmitter {
           _this.changeBase();
           break;
 
-        case DOTS.DOTS_CHANGED:         
+        case DOTS.DOTS_CHANGED:
           if(action.hasOwnProperty("newdot")){
-             _this.state.dots[action.index].push(action.newdot);
+             _this.state.dots[action.index] = [
+               ..._this.state.dots[action.index],
+               action.newdot
+             ];
           }else{
              _this.state.dots[action.index] = _this.updateDotsArray(_this.state.dots[action.index], action.value);
           }
@@ -60,17 +63,17 @@ class DotsStore extends EventEmitter {
         case DOTS.ONE_STEP_STABILIZE:
           _this.oneStepStabilize();
           break;
-          
+
         case DOTS.STABILIZE:
-          _this.stablize();    
+          _this.stablize();
           break;
 
         case DOTS.CLEAR:
-          _this.clearDots();         
+          _this.clearDots();
           break;
 
         default:
-            break;
+          return;//We don't want to cause an emitChange() for nothing.
       }
 
       _this.setDotsCount();
@@ -130,11 +133,11 @@ class DotsStore extends EventEmitter {
     var _this = this;
 
     dots.splice(this.state.nbContainers);
-    
+
     dots.forEach(function(dot, index){
 
       if(dots.length <= index+1){
-        dots.push([]);  
+        dots.push([]);
       }
 
       dots[index+1] = _this.updateDotsArray(dots[index+1], dots[index+1].length + Math.floor(dot.length / base));
@@ -157,7 +160,7 @@ class DotsStore extends EventEmitter {
       if(!stepIsDone && index >= startIndex ){
 
         if(dots.length <= index+1){
-          dots.push([]);  
+          dots.push([]);
         }
 
         if(dot.length >= base){
@@ -187,13 +190,15 @@ class DotsStore extends EventEmitter {
       //Todo : make those dots explode from dotIndex position
       this.state.dots[zoneIndex] = this.updateDotsArray(this.state.dots[zoneIndex], this.state.dots[zoneIndex].length-nbDots);
     }
-    
+
   }
 
   addDots(zoneIndex, nbDots, newdot){
-
     if(nbDots > 0 && newdot !== undefined){
-      this.state.dots[zoneIndex].push(newdot);
+      this.state.dots[zoneIndex] = [
+        ...this.state.dots[zoneIndex],
+        newdot
+      ];
       nbDots--;
     }
 

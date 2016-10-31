@@ -10,7 +10,8 @@
     "flux": "^3.0.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
-    "react-faux-dom": "^3.0.0"
+    "react-faux-dom": "^3.0.0",
+    "shallowequal": "^0.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
