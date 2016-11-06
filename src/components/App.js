@@ -79,7 +79,6 @@ class DotsContainer extends Component{
   }
 
   render() {
-    console.log("[DotsContainer] render()");
     return (
       <div className="dotsContainer">
         <div className="title">x<sup>{this.state.index}</sup></div>
@@ -144,7 +143,6 @@ class SVGContainer extends React.Component {
   }
 
   render() {
-    console.log("[SVGContainer] render()");
 
     var statedots = this.props.dots;
 
@@ -210,7 +208,6 @@ class SVGFullSizeContainer extends React.Component {
   }
 
   render() {
-    console.log("[SVGFullSizeContainer] render()");
 
     return (
       <div className="SVGContainer">
@@ -327,7 +324,6 @@ class SVGDot extends React.Component {
   }
 
   render(){
-    console.log("[SVGDot] render()");
 
     var style = (this.state.selected ? "dotCircle dotCircleSelected" : "dotCircle");
     if(this.props.style) style += " " + this.props.style;
@@ -387,7 +383,6 @@ class ConfigPanel extends Component{
   }
 
   render() {
-    console.log("[ConfigPanel] render()");
     return (
       <div className="configPanel">
         <button onClick={this.changeBase} className="base">1 <i className="fa fa-long-arrow-left"></i> {this.state.base}</button>
@@ -426,7 +421,6 @@ class VisualPanel extends Component{
   }
 
   render() {
-    console.log("[VisualPanel] render()");
     return (
       <div className="visualPanel">
         {this.state.dotsCount} <i className="fa fa-arrows-h"></i> <span className={((_DotsStore.getDotsNum() !== "?") ? 'ok' : '') + ((_DotsStore.isMachineStable()) ? '' : ' baseIsOver')}>{this.state.dotsNum}</span>
@@ -448,7 +442,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("[App] render()");
     return (
       <div id="jeu" className="scolab">
         <div className="App">
