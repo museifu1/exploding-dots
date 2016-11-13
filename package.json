@@ -8,6 +8,7 @@
   "dependencies": {
     "d3": "^4.2.6",
     "flux": "^3.0.0",
+    "radium": "^0.18.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-faux-dom": "^3.0.0",

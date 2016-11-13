@@ -7,6 +7,7 @@ import AppDispatcher from './../dispatchers/AppDispatcher';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import * as d3 from 'd3';
 import shallowequal from'shallowequal';
+import Radium from 'radium';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -80,16 +81,63 @@ class DotsContainer extends Component{
 
   render() {
     return (
-      <div className="dotsContainer">
-        <div className="title">x<sup>{this.state.index}</sup></div>
-        <span className="nbDots">{this.state.value}</span>
-        <button onClick={this.plusOne.bind(this)}>+1</button>
-        <button onClick={this.minusOne.bind(this)}>-1</button>
-        <div className={"baseNumber baseNumber2 " + (this.state.value > (this.state.base-1) ? 'baseIsOver' : '')}>{this.state.value}</div>
+      <div style={dotsContainerStyle.base}>
+        <div style={dotsContainerStyle.title}>x<sup>{this.state.index}</sup></div>
+        <span style={dotsContainerStyle.nbDots}>{this.state.value}</span>
+        <button style={dotsContainerStyle.button} onClick={this.plusOne.bind(this)}>+1</button>
+        <button style={dotsContainerStyle.button} onClick={this.minusOne.bind(this)}>-1</button>
+        <div style={[dotsContainerStyle.baseNumber, (this.state.value > (this.state.base-1)) && dotsContainerStyle.baseIsOver ]}>{this.state.value}</div>
       </div>);
   }
 }
+DotsContainer = Radium(DotsContainer);
 
+const shakeAnimation = Radium.keyframes({
+  '3%':   {transform: "translate3d(-2px, 0, 0)"},
+  '5%':   {transform: "translate3d(2px, 0, 0)"},
+  '8%':   {transform: "translate3d(-2px, 0, 0)"},
+  '10%':   {transform: "translate3d(2px, 0, 0)"},
+  '13%':   {transform: "translate3d(-2px, 0, 0)"},
+  '15%':   {transform: "translate3d(2px, 0, 0)"},
+  '18%':   {transform: "translate3d(-2px, 0, 0)"},
+  '20%':   {transform: "translate3d(2px, 0, 0)"},
+  '22%':   {transform: "translate3d(-2px, 0, 0)"},
+  '25%':   {transform: "translate3d(0px, 0, 0)"},
+});
+const dotsContainerStyle = {
+  base: {
+    width: "18%",
+    display: "inline-block",
+    margin: "1%",
+    backgroundColor: "#fff"
+  },
+  title: {
+    padding: "5px",
+    backgroundColor: "#f0f0f0",
+    display: "none"
+  },
+  nbDots: {
+    width: "100%",
+    float: "left",
+    margin: "10px 0px 5px",
+    fontSize: "1em",
+    color: "#555",
+    display: "none"
+  },
+  button: {
+    display: "none"
+  },
+  baseIsOver: {
+    color: "#e96656",
+    animation: shakeAnimation + "2s cubic-bezier(.36,.07,.19,.97) both infinite",
+    transform: "translate3d(0, 0, 0)"
+  },
+  baseNumber: {
+    color: "#CCC",
+  	display: "block",
+  	font: "700 4em/1.5em 'Montserrat', sans-serif"
+  }
+}
 
 
 class SVGContainer extends React.Component {
@@ -430,8 +478,6 @@ class VisualPanel extends Component{
 }
 
 
-
-
 class App extends Component {
 
   constructor(props){
@@ -443,16 +489,16 @@ class App extends Component {
 
   render() {
     return (
-      <div id="jeu" className="scolab">
-        <div className="App">
-          <div className="App-header">
-          <h2><img src={this.boum} alt="Boum, Le Jeu Mathématique" /></h2>
+      <div id="jeu" style={appStyle.scolab}>
+        <div style={appStyle.app}>
+          <div style={appStyle.header}>
+          <h2 style={appStyle.h2}><img style={appStyle.img} src={this.boum} alt="Boum, Le Jeu Mathématique" /></h2>
             <ConfigPanel />
           </div>
 
-          <div className="App-intro">
+          <div style={appStyle.intro}>
             <VisualPanel />
-            <div className="dotsContainers">
+            <div>
               <DotsContainer index="4" />
               <DotsContainer index="3" />
               <DotsContainer index="2" />
@@ -460,18 +506,88 @@ class App extends Component {
               <DotsContainer index="0" />
             </div>
 
-            <div className="dotsFullSizeContainers">
+            <div>
               <SVGFullSizeContainer className="SVGFullSizeContainer" />
             </div>
           </div>
         </div>
-        <div className="credits">
-          <p><a href="http://www.scolab.com" target="_blank">Un projet de <img src={this.logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a></p>
-          <p className="license"><small>Cette œuvre est mise à disposition selon les termes de la <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence Creative Commons Attribution 4.0 International</a>.</small></p>
+        <div style={appStyle.credits}>
+          <p style={appStyle.p}><a key="a" style={appStyle.a} href="http://www.scolab.com" target="_blank">Un projet de <img src={this.logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a></p>
+          <p style={appStyle.license}><small>Cette œuvre est mise à disposition selon les termes de la <a style={appStyle.a} href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence Creative Commons Attribution 4.0 International</a>.</small></p>
         </div>
       </div>
     );
   }
 }
+App = Radium(App);
+
+const appStyle = {
+  scolab: {
+  	margin: "0 auto",
+  	padding: "45px 0",
+  	"maxWidth": "900px",
+    "textAlign": "center"
+  },
+  app: {
+  	"boxShadow": "5px 5px 0px 0px rgba(0,0,0,0.2)",
+  	"fontSize": "1em"
+  },
+  header: {
+    "backgroundColor": "#f0f0f0",
+    height: "80px",
+    position: "relative",
+    "textAlign": "left"
+  },
+  h2: {
+    "boxSizing": "border-box",
+    font: "400 2em/2.5em 'Montserrat', sans-serif",
+    "marginBottom": "8px",
+    margin: "0 1%",
+    padding: "0 40px",
+    position: "relative",
+    "textTransform": "uppercase",
+    width: "98%"
+  },
+  img: {
+  	height: "60px",
+  	left: "40px",
+  	position: "absolute",
+  	top: "10px"
+  },
+  intro: {
+    background: "#fff",
+    fontSize: "0.6em",
+    padding: "30px 40px 40px",
+    textAlign: "center"
+  },
+  credits: {
+    opacity: 0.5,
+  	padding: "20px 25px",
+  	"textAlign": "right",
+  },
+  license: {
+    float: "left",
+  	"textAlign": "left",
+    "lineHeight": "normal",
+    margin: 0
+  },
+  a: {
+    color: "#000",
+    "textDecoration": "none",
+    ":focus": {
+      "borderBottom": "1px solid #000",
+      color: "#000"
+    },
+    ":hover": {
+      "borderBottom": "1px solid #000",
+      color: "#000"
+    }
+  },
+  p: {
+    float: "right",
+    "lineHeight": "normal",
+    margin: 0
+  }
+};
 
 export default App;
