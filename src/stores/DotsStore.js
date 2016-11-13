@@ -180,6 +180,7 @@ class DotsStore extends EventEmitter {
     //console.log("this.state.dots[zoneIndex][0]", this.state.dots[zoneIndex][0]);
 
     if(nbDots > 0 && dotIndex !== -1){
+      this.state.dots[zoneIndex] = this.state.dots[zoneIndex].slice();
       this.state.dots[zoneIndex].splice(dotIndex, 1);
       //removed[0].style = dotStyle;
       //console.log("removed", removed);
