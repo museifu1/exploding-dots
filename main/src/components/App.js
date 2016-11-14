@@ -8,6 +8,7 @@ import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import * as d3 from 'd3';
 import shallowequal from'shallowequal';
 import Radium from 'radium';
+import App2 from 'testApp';
 
 var _DotsStore = new DotsStore(AppDispatcher, { base : 2 });
 
@@ -515,6 +516,7 @@ class App extends Component {
           <p style={appStyle.p}><a key="a" style={appStyle.a} href="http://www.scolab.com" target="_blank">Un projet de <img src={this.logo} width="65" alt="Une présentation de Scolab Inc. - scolab.com" /></a></p>
           <p style={appStyle.license}><small>Cette œuvre est mise à disposition selon les termes de la <a style={appStyle.a} href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Licence Creative Commons Attribution 4.0 International</a>.</small></p>
         </div>
+        <App2 />
       </div>
     );
   }
